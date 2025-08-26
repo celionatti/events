@@ -200,6 +200,133 @@ section {
   padding: 1.25rem 1.5rem;
 }
 
+/* Ticket Cards */
+    .ticket-card {
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.05),
+        rgba(255, 255, 255, 0.02)
+      );
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-1);
+    }
+    
+    .ticket-tier {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      transition: all 0.2s ease;
+    }
+    
+    .ticket-tier.sold-out {
+      opacity: 0.6;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .tier-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.5rem;
+    }
+    
+    .price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--blue-1);
+    }
+    
+    .countdown {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--blue-1);
+      padding: 0.5rem 1rem;
+      background: rgba(13, 71, 161, 0.2);
+      border-radius: var(--radius-md);
+      display: inline-block;
+    }
+    
+    .event-detail-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .event-detail-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(30, 136, 229, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    /* Quantity selector */
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .quantity-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: var(--text-1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    
+    .quantity-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .quantity-input {
+      width: 60px;
+      text-align: center;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-sm);
+      color: var(--text-1);
+      padding: 0.5rem;
+    }
+    
+    .sold-out-badge {
+      background: #dc3545;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+    }
+    
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+    }
+    
+    /* Two-column layout */
+    .two-column-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
 /* Footer */
 footer {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
@@ -267,6 +394,23 @@ footer {
     transform: translateY(0) rotate(0);
   }
 }
+
+/* Responsive adjustments */
+    @media (max-width: 992px) {
+      .two-column-layout {
+        grid-template-columns: 1fr;
+      }
+      
+      .event-hero {
+        padding: 4rem 0 1rem;
+      }
+      
+      .event-detail-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+      }
+    }
 
 /* Accessibility: respect reduced motion */
 @media (prefers-reduced-motion: reduce) {

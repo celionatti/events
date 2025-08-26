@@ -1,0 +1,1042 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Afrobeats Live: Midnight Wave | PulseTickets</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Glide.js CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.core.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.theme.min.css">
+  <style>
+    :root {
+      /* Three blues: light, mid, deep */
+      --blue-1: #64b5f6;
+      --blue-2: #1e88e5;
+      --blue-3: #0d47a1;
+      /* Base dark palette */
+      --bg-0: #0b1220;
+      --bg-1: #0e1526;
+      --bg-2: #101a30;
+      --text-1: #e2e8f0;
+      --text-2: #9fb3c8;
+      --glass: white;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --shadow-1: 0 10px 30px rgba(0, 0, 0, 0.35);
+      --shadow-2: 0 6px 18px rgba(0, 0, 0, 0.25);
+      --shadow-focus: 0 0 0 0.25rem rgba(30, 136, 229, 0.35);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+        "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(
+          1200px 600px at 75% -100px,
+          rgba(30, 136, 229, 0.25),
+          transparent 70%
+        ),
+        radial-gradient(
+          800px 400px at -10% 20%,
+          rgba(13, 71, 161, 0.25),
+          transparent 60%
+        ),
+        linear-gradient(180deg, var(--bg-0), var(--bg-1) 30%, var(--bg-2) 100%);
+      color: var(--text-1);
+      overflow-x: hidden;
+    }
+
+    /* Glassmorphic sticky navbar */
+    .navbar-glass {
+      position: sticky;
+      top: 0;
+      z-index: 1030;
+      background: rgba(13, 19, 35, 0.48);
+      backdrop-filter: saturate(1.2) blur(14px);
+      -webkit-backdrop-filter: saturate(1.2) blur(14px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .navbar .nav-link {
+      color: var(--text-2);
+      transition: 0.25s ease;
+    }
+    .navbar .nav-link:hover,
+    .navbar .nav-link:focus {
+      color: var(--blue-1);
+    }
+
+    .brand-mark {
+      display: inline-grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--blue-2), var(--blue-3));
+      border-radius: 10px;
+      color: white;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      box-shadow: var(--shadow-2);
+    }
+
+    /* Primary button (custom) */
+    .btn-pulse {
+      --c1: var(--blue-2);
+      --c2: var(--blue-3);
+      background: linear-gradient(135deg, var(--c1), var(--c2));
+      color: white;
+      border: none;
+      border-radius: 14px;
+      padding: 0.75rem 1.1rem;
+      box-shadow: 0 8px 22px rgba(30, 136, 229, 0.35);
+      transition: transform 0.15s ease, box-shadow 0.3s ease, filter 0.3s ease;
+    }
+    .btn-pulse:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+    }
+    .btn-pulse:focus {
+      box-shadow: var(--shadow-focus);
+      outline: none;
+    }
+    .btn-ghost {
+      color: var(--blue-1);
+      border: 1px solid rgba(100, 181, 246, 0.35);
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 14px;
+      transition: 0.25s ease;
+    }
+    .btn-ghost:hover {
+      background: rgba(100, 181, 246, 0.1);
+      color: white;
+    }
+
+    /* Hero */
+    .event-hero {
+      position: relative;
+      padding: 6rem 0 2rem;
+    }
+    .event-hero h1 {
+      font-size: clamp(2rem, 2.4rem + 1.5vw, 3.5rem);
+      line-height: 1.05;
+      letter-spacing: 0.2px;
+      text-shadow: 0 6px 24px rgba(12, 35, 82, 0.45);
+    }
+
+    /* Card styles */
+    .event-card {
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.04),
+        rgba(255, 255, 255, 0.02)
+      );
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease,
+        border-color 0.25s ease;
+      box-shadow: var(--shadow-1);
+    }
+    .event-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(100, 181, 246, 0.35);
+    }
+    .event-img {
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      width: 100%;
+      filter: saturate(1.05) contrast(1.05);
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.8rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(13, 71, 161, 0.18);
+      color: var(--blue-1);
+    }
+
+    /* Sections */
+    section {
+      scroll-margin-top: 90px;
+    }
+    .section-title {
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      margin-bottom: 0.5rem;
+    }
+    .section-sub {
+      color: var(--text-2);
+    }
+
+    /* Category Cards */
+    .category-card {
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.05),
+        rgba(255, 255, 255, 0.03)
+      );
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s ease, border-color 0.25s ease;
+      text-align: center;
+    }
+    .category-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(100, 181, 246, 0.35);
+    }
+    .category-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--blue-1);
+    }
+
+    /* Testimonial */
+    .testimonial {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.5rem;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    /* Fix for dark text issues */
+    .text-secondary {
+      color: var(--text-2) !important;
+    }
+    .text-info-emphasis {
+      color: var(--blue-1) !important;
+    }
+    .form-control,
+    .form-select {
+      color: var(--bg-0) !important;
+    }
+    .form-control::placeholder {
+      color: var(--text-2) !important;
+      opacity: 0.7;
+    }
+
+    /* Animations (on-scroll) */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px) scale(0.98);
+      transition: all 0.7s cubic-bezier(0.2, 0.65, 0.2, 1);
+    }
+    .reveal.in {
+      opacity: 1;
+      transform: none;
+    }
+    .delay-1 {
+      transition-delay: 0.08s;
+    }
+    .delay-2 {
+      transition-delay: 0.16s;
+    }
+    .delay-3 {
+      transition-delay: 0.24s;
+    }
+
+    /* Event Single Page Specific Styles */
+    .event-hero-img {
+      width: 100%;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-1);
+      aspect-ratio: 16/9;
+      object-fit: cover;
+    }
+    
+    .ticket-card {
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.05),
+        rgba(255, 255, 255, 0.02)
+      );
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-1);
+    }
+    
+    .ticket-tier {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    
+    .ticket-tier:hover, .ticket-tier.selected {
+      border-color: var(--blue-1);
+      background: rgba(30, 136, 229, 0.1);
+    }
+    
+    .ticket-tier.selected {
+      box-shadow: 0 0 0 2px var(--blue-1);
+    }
+    
+    .price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--blue-1);
+    }
+    
+    .countdown {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--blue-1);
+      padding: 0.5rem 1rem;
+      background: rgba(13, 71, 161, 0.2);
+      border-radius: var(--radius-md);
+      display: inline-block;
+    }
+    
+    .event-detail-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .event-detail-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(30, 136, 229, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .map-container {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      height: 300px;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .performer-card {
+      text-align: center;
+      padding: 1.5rem;
+    }
+    
+    .performer-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 1rem;
+      border: 2px solid var(--blue-1);
+    }
+    
+    /* Quantity selector */
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .quantity-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: var(--text-1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    
+    .quantity-input {
+      width: 50px;
+      text-align: center;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-sm);
+      color: var(--text-1);
+      padding: 0.25rem;
+    }
+    
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .event-hero {
+        padding: 4rem 0 1rem;
+      }
+      
+      .event-detail-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+      }
+      
+      .performer-card {
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    /* Accessibility: respect reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal,
+      .event-card,
+      .category-card,
+      .btn-pulse {
+        transition: none !important;
+      }
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-glass">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-1" href="#">
+        <span class="brand-mark">E</span>
+        <span class="fw-bold text-white">Eventlyy.</span>
+      </a>
+      <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileNav" aria-controls="mobileNav" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"><i class="bi bi-list fs-2"></i></span>
+      </button>
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+          <li class="nav-item"><a class="nav-link" href="#events">Discover Events</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
+          <li class="nav-item"><a class="btn btn-ghost ms-lg-2" href="#">Login</a></li>
+          <li class="nav-item"><a class="btn btn-pulse ms-lg-2" href="#">Sign Up</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- Offcanvas Mobile Nav -->
+  <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="mobileNav" aria-labelledby="mobileNavLabel" style="background:rgba(6,10,20,.98)">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="mobileNavLabel">Eventlyy.</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <a class="nav-link py-2" href="#" data-bs-dismiss="offcanvas">Discover Events</a>
+      <a class="nav-link py-2" href="#" data-bs-dismiss="offcanvas">About Us</a>
+      <a class="btn btn-ghost w-100 mt-3" href="#" data-bs-dismiss="offcanvas">Login</a>
+      <a class="btn btn-pulse w-100 mt-3" href="#" data-bs-dismiss="offcanvas">Sign up</a>
+    </div>
+  </div>
+
+  <!-- EVENT HERO -->
+  <section class="event-hero">
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-lg-8">
+          <div class="reveal">
+            <span class="chip mb-3"><i class="bi bi-music-note-beamed"></i> Music Concert</span>
+            <h1>Afrobeats Live: Midnight Wave</h1>
+            <div class="d-flex flex-wrap gap-3 align-items-center mt-3">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-calendar-event text-info-emphasis"></i>
+                <span>Friday, October 10, 2025 • 8:00 PM</span>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-geo-alt text-info-emphasis"></i>
+                <span>Eko Convention Center, Lagos</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="countdown mt-4 reveal delay-1">
+            <i class="bi bi-clock me-2"></i> 
+            <span id="countdown-timer">5 days 12:45:32</span> until event
+          </div>
+        </div>
+        
+        <div class="col-lg-4">
+          <div class="ticket-card reveal delay-2">
+            <h4 class="mb-3">Get Tickets</h4>
+            
+            <div class="ticket-tier selected">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h5 class="mb-1">VIP Experience</h5>
+                  <p class="mb-0 text-muted">Front row seats + backstage access</p>
+                </div>
+                <div class="price">₦45,000</div>
+              </div>
+            </div>
+            
+            <div class="ticket-tier">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h5 class="mb-1">General Admission</h5>
+                  <p class="mb-0 text-muted">Standard seating</p>
+                </div>
+                <div class="price">₦15,000</div>
+              </div>
+            </div>
+            
+            <div class="ticket-tier">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h5 class="mb-1">Group Package</h5>
+                  <p class="mb-0 text-muted">6+ tickets (15% discount)</p>
+                </div>
+                <div class="price">₦12,750</div>
+              </div>
+            </div>
+            
+            <div class="mt-4">
+              <label class="form-label">Quantity</label>
+              <div class="quantity-selector">
+                <button class="quantity-btn" id="decrease-qty">-</button>
+                <input type="number" class="quantity-input" id="ticket-qty" value="2" min="1" max="10">
+                <button class="quantity-btn" id="increase-qty">+</button>
+              </div>
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4 pt-3 border-top border-secondary">
+              <div>
+                <div class="text-muted">Total</div>
+                <div class="h4 mb-0" id="total-price">₦90,000</div>
+              </div>
+              <button class="btn btn-pulse align-self-center" data-bs-toggle="modal" data-bs-target="#checkoutModal">
+                <i class="bi bi-ticket-perforated me-2"></i>Buy Tickets
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENT IMAGE -->
+  <section class="py-4">
+    <div class="container">
+      <img src="https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=1400&auto=format&fit=crop" alt="Afrobeats Live concert scene" class="event-hero-img reveal">
+    </div>
+  </section>
+
+  <!-- EVENT DETAILS -->
+  <section class="py-5">
+    <div class="container">
+      <div class="row gy-5">
+        <div class="col-lg-8">
+          <h2 class="section-title reveal">Event Details</h2>
+          
+          <div class="reveal delay-1">
+            <p>Get ready for an unforgettable night of pulsating Afrobeats rhythms and electrifying performances at the Eko Convention Center. Midnight Wave brings together the biggest names in African music for a 5-hour extravaganza that will keep you dancing until the early hours.</p>
+            
+            <p>This year's edition features special collaborative performances never seen before, with surprise guest appearances that will leave you in awe. Experience the fusion of traditional African sounds with contemporary production in a state-of-the-art audiovisual production.</p>
+          </div>
+          
+          <h3 class="mt-5 pt-3 reveal delay-2">Lineup & Schedule</h3>
+          
+          <div class="event-detail-item reveal delay-2">
+            <div class="event-detail-icon">
+              <i class="bi bi-music-note-beamed text-primary"></i>
+            </div>
+            <div>
+              <h5 class="mb-1">8:00 PM - Doors Open</h5>
+              <p class="mb-0">Arrive early to enjoy our pre-show DJ sets and grab your favorite drinks</p>
+            </div>
+          </div>
+          
+          <div class="event-detail-item reveal delay-3">
+            <div class="event-detail-icon">
+              <i class="bi bi-mic text-primary"></i>
+            </div>
+            <div>
+              <h5 class="mb-1">9:00 PM - Opening Acts</h5>
+              <p class="mb-0">Rising stars: Tems, Ayra Starr, and Fireboy DML</p>
+            </div>
+          </div>
+          
+          <div class="event-detail-item reveal">
+            <div class="event-detail-icon">
+              <i class="bi bi-star text-primary"></i>
+            </div>
+            <div>
+              <h5 class="mb-1">10:30 PM - Headliners</h5>
+              <p class="mb-0">Main performance: Burna Boy, Wizkid, and Davido together on stage</p>
+            </div>
+          </div>
+          
+          <div class="event-detail-item reveal delay-1">
+            <div class="event-detail-icon">
+              <i class="bi bi-arrow-repeat text-primary"></i>
+            </div>
+            <div>
+              <h5 class="mb-1">12:30 AM - Afterparty</h5>
+              <p class="mb-0">Continue the celebration with our official afterparty featuring DJ Spinall</p>
+            </div>
+          </div>
+          
+          <h3 class="mt-5 pt-3 reveal delay-2">What to Expect</h3>
+          <ul class="reveal delay-3">
+            <li>World-class sound system and lighting production</li>
+            <li>Multiple bars and food vendors featuring local cuisine</li>
+            <li>VIP lounge with premium amenities and private bar</li>
+            <li>Merchandise stands with exclusive event collectibles</li>
+            <li>Safe and secure environment with professional security staff</li>
+          </ul>
+        </div>
+        
+        <div class="col-lg-4">
+          <div class="ticket-card mb-4 reveal">
+            <h4 class="mb-3">Event Information</h4>
+            
+            <div class="event-detail-item">
+              <div class="event-detail-icon">
+                <i class="bi bi-geo-alt text-primary"></i>
+              </div>
+              <div>
+                <h5 class="mb-1">Venue</h5>
+                <p class="mb-0">Eko Convention Center</p>
+                <p class="mb-0">Victoria Island, Lagos</p>
+                <a href="#location" class="btn btn-sm btn-ghost mt-2">View on map</a>
+              </div>
+            </div>
+            
+            <div class="event-detail-item">
+              <div class="event-detail-icon">
+                <i class="bi bi-calendar-event text-primary"></i>
+              </div>
+              <div>
+                <h5 class="mb-1">Date & Time</h5>
+                <p class="mb-0">Friday, October 10, 2025</p>
+                <p class="mb-0">Doors open: 8:00 PM</p>
+                <p class="mb-0">Show starts: 9:00 PM</p>
+              </div>
+            </div>
+            
+            <div class="event-detail-item">
+              <div class="event-detail-icon">
+                <i class="bi bi-person text-primary"></i>
+              </div>
+              <div>
+                <h5 class="mb-1">Age Restriction</h5>
+                <p class="mb-0">18+ event</p>
+                <p class="mb-0 text-muted">Valid ID required</p>
+              </div>
+            </div>
+            
+            <div class="event-detail-item">
+              <div class="event-detail-icon">
+                <i class="bi bi-credit-card text-primary"></i>
+              </div>
+              <div>
+                <h5 class="mb-1">Payment Options</h5>
+                <p class="mb-0">Credit/Debit Cards, Bank Transfer, PayPal</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="ticket-card reveal delay-1">
+            <h4 class="mb-3">Share This Event</h4>
+            <div class="d-flex gap-2">
+              <a href="#" class="btn btn-ghost flex-grow-1"><i class="bi bi-facebook me-2"></i>Facebook</a>
+              <a href="#" class="btn btn-ghost flex-grow-1"><i class="bi bi-twitter me-2"></i>Twitter</a>
+              <a href="#" class="btn btn-ghost flex-grow-1"><i class="bi bi-whatsapp me-2"></i>WhatsApp</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERFORMERS -->
+  <section class="py-5 bg-dark">
+    <div class="container">
+      <h2 class="section-title text-center reveal">Featured Performers</h2>
+      <p class="section-sub text-center reveal delay-1 mb-5">The stars of the night</p>
+      
+      <div class="row g-4">
+        <div class="col-6 col-md-3 reveal">
+          <div class="performer-card category-card h-100">
+            <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=1000&auto=format&fit=crop" alt="Burna Boy" class="performer-img">
+            <h5>Burna Boy</h5>
+            <p class="small">African Giant</p>
+          </div>
+        </div>
+        
+        <div class="col-6 col-md-3 reveal delay-1">
+          <div class="performer-card category-card h-100">
+            <img src="https://images.unsplash.com/photo-1507838153414-b4b713384a76?q=80&w=1000&auto=format&fit=crop" alt="Wizkid" class="performer-img">
+            <h5>Wizkid</h5>
+            <p class="small">Starboy</p>
+          </div>
+        </div>
+        
+        <div class="col-6 col-md-3 reveal delay-2">
+          <div class="performer-card category-card h-100">
+            <img src="https://images.unsplash.com/photo-1494232410401-ad00d5433cfa?q=80&w=1000&auto=format&fit=crop" alt="Davido" class="performer-img">
+            <h5>Davido</h5>
+            <p class="small">O.B.O</p>
+          </div>
+        </div>
+        
+        <div class="col-6 col-md-3 reveal delay-3">
+          <div class="performer-card category-card h-100">
+            <img src="https://images.unsplash.com/photo-1511735111819-9a3f7709049c?q=80&w=1000&auto=format&fit=crop" alt="Tems" class="performer-img">
+            <h5>Tems</h5>
+            <p class="small">For Broken Ears</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION -->
+  <section id="location" class="py-5">
+    <div class="container">
+      <h2 class="section-title reveal">Venue Location</h2>
+      <p class="section-sub reveal delay-1 mb-4">Eko Convention Center, Victoria Island, Lagos</p>
+      
+      <div class="map-container reveal delay-2">
+        <!-- In a real implementation, this would be a Google Maps iframe -->
+        <div style="width:100%;height:100%;background:url('https://maps.googleapis.com/maps/api/staticmap?center=Eko+Convention+Center,Lagos&zoom=15&size=800x400&maptype=roadmap&markers=color:red%7Clabel:V%7CEko+Convention+Center,Lagos&key=API_KEY') center/cover no-repeat; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold;">
+          Interactive Map Here
+        </div>
+      </div>
+      
+      <div class="row mt-4 g-4">
+        <div class="col-md-6 reveal">
+          <h4>Getting There</h4>
+          <p>The Eko Convention Center is located in the heart of Victoria Island, easily accessible by car or public transportation.</p>
+          
+          <div class="event-detail-item">
+            <div class="event-detail-icon">
+              <i class="bi bi-car-front text-primary"></i>
+            </div>
+            <div>
+              <h5 class="mb-1">By Car</h5>
+              <p class="mb-0">Ample parking available onsite for ₦2,000 per vehicle</p>
+            </div>
+          </div>
+          
+          <div class="event-detail-item">
+            <div class="event-detail-icon">
+              <i class="bi bi-bus-front text-primary"></i>
+            </div>
+            <div>
+              <h5 class="mb-1">Public Transport</h5>
+              <p class="mb-0">Buses 12, 23, and 47 stop within walking distance</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6 reveal delay-1">
+          <h4>Venue Facilities</h4>
+          <p>The convention center offers world-class amenities to ensure your comfort throughout the event.</p>
+          
+          <ul>
+            <li>Multiple bars and concession stands</li>
+            <li>Premium restroom facilities</li>
+            <li>Accessibility access throughout</li>
+            <li>First aid station</li>
+            <li>ATM machines</li>
+            <li>Coat check service</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RELATED EVENTS -->
+  <section class="py-5 bg-dark">
+    <div class="container">
+      <h2 class="section-title reveal">You Might Also Like</h2>
+      <p class="section-sub reveal delay-1 mb-4">Other events you may be interested in</p>
+      
+      <div class="row g-4">
+        <!-- Event Card 1 -->
+        <div class="col-12 col-md-6 col-xl-4 reveal">
+          <article class="event-card h-100 d-flex flex-column">
+            <img class="event-img" src="https://images.unsplash.com/photo-1557800636-894a64c1696f?q=80&w=1400&auto=format&fit=crop" alt="TechCon Africa poster">
+            <div class="p-3 p-md-4">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="chip"><i class="bi bi-cpu"></i> Tech</span>
+                <span class="text-info-emphasis small"><i class="bi bi-calendar-event"></i> Sat • Nov 2</span>
+              </div>
+              <h5 class="mb-1">TechCon Africa 2025</h5>
+              <p class="mb-3">Landmark Centre, Lagos • 9:00 AM</p>
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge rounded-pill text-bg-primary">Pro</span>
+                  <span class="badge rounded-pill text-bg-info">Startup</span>
+                </div>
+                <a href="#" class="btn btn-pulse btn-sm"><i class="bi bi-ticket-perforated me-1"></i> Get Tickets</a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Event Card 2 -->
+        <div class="col-12 col-md-6 col-xl-4 reveal delay-1">
+          <article class="event-card h-100 d-flex flex-column">
+            <img class="event-img" src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?q=80&w=1400&auto=format&fit=crop" alt="Art Exhibition poster">
+            <div class="p-3 p-md-4">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="chip"><i class="bi bi-palette"></i> Art</span>
+                <span class="text-info-emphasis small"><i class="bi bi-calendar-event"></i> Sun • Nov 10</span>
+              </div>
+              <h5 class="mb-1">Contemporary Art Exhibition</h5>
+              <p class="mb-3">Nike Art Gallery, Lagos • 11:00 AM</p>
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge rounded-pill text-bg-primary">Early Bird</span>
+                  <span class="badge rounded-pill text-bg-info">General</span>
+                </div>
+                <a href="#" class="btn btn-pulse btn-sm"><i class="bi bi-ticket-perforated me-1"></i> Get Tickets</a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Event Card 3 -->
+        <div class="col-12 col-md-6 col-xl-4 reveal delay-2">
+          <article class="event-card h-100 d-flex flex-column">
+            <img class="event-img" src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=1400&auto=format&fit=crop" alt="Food Festival poster">
+            <div class="p-3 p-md-4">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="chip"><i class="bi bi-egg-fried"></i> Food</span>
+                <span class="text-info-emphasis small"><i class="bi bi-calendar-event"></i> Sat • Dec 7</span>
+              </div>
+              <h5 class="mb-1">Lagos Food & Wine Festival</h5>
+              <p class="mb-3">Tafawa Balewa Square, Lagos • 12:00 PM</p>
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge rounded-pill text-bg-primary">VIP</span>
+                  <span class="badge rounded-pill text-bg-info">Tasting</span>
+                </div>
+                <a href="#" class="btn btn-pulse btn-sm"><i class="bi bi-ticket-perforated me-1"></i> Get Tickets</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="py-4">
+    <div class="container">
+      <div class="row align-items-center gy-3">
+        <div class="col-md-6">
+          <div class="d-flex align-items-center gap-1">
+            <span class="brand-mark">E</span>
+            <div>
+              <div class="fw-bold">Eventlyy.</div>
+              <div class="small">© <span id="y"></span> Eventlyy. All rights reserved.</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <a href="#" class="text-decoration-none me-3">Terms</a>
+          <a href="#" class="text-decoration-none me-3">Privacy</a>
+          <a href="#top" class="text-decoration-none"><i class="bi bi-arrow-up-circle"></i> Back to top</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Checkout Modal -->
+  <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content text-bg-dark">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title" id="checkoutModalLabel">Complete Your Purchase</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="checkoutForm">
+            <div class="mb-3">
+              <label for="email" class="form-label">Email address</label>
+              <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone number</label>
+              <input type="tel" class="form-control" id="phone" required>
+            </div>
+            <div class="mb-3">
+              <label for="cardNumber" class="form-label">Card number</label>
+              <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456" required>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="expiry" class="form-label">Expiry date</label>
+                <input type="text" class="form-control" id="expiry" placeholder="MM/YY" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="cvv" class="form-label">CVV</label>
+                <input type="text" class="form-control" id="cvv" placeholder="123" required>
+              </div>
+            </div>
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="checkbox" id="terms" required>
+              <label class="form-check-label" for="terms">
+                I agree to the <a href="#">terms and conditions</a>
+              </label>
+            </div>
+            <button type="submit" class="btn btn-pulse w-100">Pay Now - <span id="modal-total">₦90,000</span></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap + Glide JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Year in footer
+    document.getElementById("y").textContent = new Date().getFullYear();
+
+    // Ticket selection functionality
+    const ticketTiers = document.querySelectorAll('.ticket-tier');
+    const quantityInput = document.getElementById('ticket-qty');
+    const decreaseBtn = document.getElementById('decrease-qty');
+    const increaseBtn = document.getElementById('increase-qty');
+    const totalElement = document.getElementById('total-price');
+    const modalTotalElement = document.getElementById('modal-total');
+    
+    const prices = {
+      'VIP Experience': 45000,
+      'General Admission': 15000,
+      'Group Package': 12750
+    };
+    
+    let selectedTier = 'VIP Experience';
+    
+    // Select ticket tier
+    ticketTiers.forEach(tier => {
+      tier.addEventListener('click', () => {
+        ticketTiers.forEach(t => t.classList.remove('selected'));
+        tier.classList.add('selected');
+        selectedTier = tier.querySelector('h5').textContent;
+        updateTotal();
+      });
+    });
+    
+    // Quantity adjustment
+    decreaseBtn.addEventListener('click', () => {
+      if (quantityInput.value > 1) {
+        quantityInput.value = parseInt(quantityInput.value) - 1;
+        updateTotal();
+      }
+    });
+    
+    increaseBtn.addEventListener('click', () => {
+      if (quantityInput.value < 10) {
+        quantityInput.value = parseInt(quantityInput.value) + 1;
+        updateTotal();
+      }
+    });
+    
+    quantityInput.addEventListener('change', () => {
+      if (quantityInput.value < 1) quantityInput.value = 1;
+      if (quantityInput.value > 10) quantityInput.value = 10;
+      updateTotal();
+    });
+    
+    // Update total price
+    function updateTotal() {
+      const quantity = parseInt(quantityInput.value);
+      const total = prices[selectedTier] * quantity;
+      totalElement.textContent = `₦${total.toLocaleString()}`;
+      modalTotalElement.textContent = `₦${total.toLocaleString()}`;
+    }
+    
+    // Countdown timer
+    function updateCountdown() {
+      const eventDate = new Date('October 10, 2025 20:00:00').getTime();
+      const now = new Date().getTime();
+      const distance = eventDate - now;
+      
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      
+      document.getElementById('countdown-timer').innerHTML = 
+        `${days} days ${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+    
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+    
+    // Form submission
+    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      // In a real application, you would process the payment here
+      const checkoutModal = bootstrap.Modal.getInstance(document.getElementById('checkoutModal'));
+      checkoutModal.hide();
+      
+      // Show success message
+      const toast = document.createElement('div');
+      toast.className = 'toast align-items-center text-bg-success border-0';
+      toast.setAttribute('role', 'alert');
+      toast.setAttribute('aria-live', 'assertive');
+      toast.setAttribute('aria-atomic', 'true');
+      toast.innerHTML = `
+        <div class="d-flex">
+          <div class="toast-body">
+            <i class="bi bi-check-circle-fill me-2"></i> Your tickets have been purchased successfully!
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      `;
+      document.body.appendChild(toast);
+      const bsToast = new bootstrap.Toast(toast);
+      bsToast.show();
+      
+      // Remove toast after it's hidden
+      toast.addEventListener('hidden.bs.toast', function() {
+        document.body.removeChild(toast);
+      });
+    });
+    
+    // IntersectionObserver for reveal animations
+    const revealItems = document.querySelectorAll(".reveal");
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in");
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.14 }
+    );
+    revealItems.forEach((el) => io.observe(el));
+  </script>
+</body>
+</html>
