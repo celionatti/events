@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TicketWave | Premium Event Tickets</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Glide.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/css/glide.core.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/css/glide.theme.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-blue: #0a192f;
+            --medium-blue: #172a45;
+            --light-blue: #64ffda;
+            --text-light: #ccd6f6;
+            --text-dark: #8892b0;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--dark-blue);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Glassmorphic Navbar */
+        .navbar {
+            background: rgba(10, 25, 47, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+            padding: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--light-blue) !important;
+            font-size: 1.8rem;
+        }
+
+        .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 500;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--light-blue);
+            left: 0;
+            bottom: 0;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--light-blue) !important;
+        }
+
+        .btn-ticket {
+            background: linear-gradient(45deg, var(--light-blue), #4dc7b3);
+            border: none;
+            color: var(--dark-blue);
+            font-weight: 600;
+            border-radius: 30px;
+            padding: 10px 25px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-ticket:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(100, 255, 218, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 150px 0 100px;
+            background: linear-gradient(to bottom, var(--dark-blue), var(--medium-blue));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: rgba(100, 255, 218, 0.1);
+            top: -250px;
+            right: -250px;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(100, 255, 218, 0.05);
+            bottom: -150px;
+            left: -150px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: var(--text-dark);
+            animation: fadeInUp 1s ease 0.2s;
+            animation-fill-mode: both;
+        }
+
+        /* Events Section */
+        .events {
+            padding: 100px 0;
+            background-color: var(--medium-blue);
+        }
+
+        .section-title {
+            position: relative;
+            margin-bottom: 60px;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 3px;
+            background: var(--light-blue);
+            bottom: 0;
+            left: 0;
+        }
+
+        .event-card {
+            background: rgba(23, 42, 69, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            margin-bottom: 30px;
+            border: 1px solid rgba(100, 255, 218, 0.1);
+        }
+
+        .event-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(100, 255, 218, 0.3);
+        }
+
+        .event-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .event-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .event-card:hover .event-img img {
+            transform: scale(1.1);
+        }
+
+        .event-date {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--light-blue);
+            color: var(--dark-blue);
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+
+        .event-content {
+            padding: 20px;
+        }
+
+        .event-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+
+        .event-content p {
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        /* Featured Events Slider */
+        .featured-events {
+            padding: 100px 0;
+            background-color: var(--dark-blue);
+        }
+
+        .glide__slide {
+            opacity: 0.6;
+            transform: scale(0.9);
+            transition: all 0.4s ease;
+        }
+
+        .glide__slide.glide__slide--active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 100px 0;
+            background-color: var(--medium-blue);
+        }
+
+        .pricing-card {
+            background: rgba(23, 42, 69, 0.8);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(100, 255, 218, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(100, 255, 218, 0.3);
+        }
+
+        .price {
+            font-size: 3rem;
+            color: var(--light-blue);
+            margin: 20px 0;
+        }
+
+        .pricing-features {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .pricing-features li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-blue);
+            padding: 80px 0 30px;
+            border-top: 1px solid rgba(100, 255, 218, 0.1);
+        }
+
+        .footer-links h5 {
+            color: var(--light-blue);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--light-blue);
+            padding-left: 5px;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(100, 255, 218, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            color: var(--text-light);
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background: var(--light-blue);
+            color: var(--dark-blue);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(100, 255, 218, 0.1);
+            color: var(--text-dark);
+            text-align: center;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .animate.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero {
+                padding: 120px 0 80px;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">TicketWave</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Venues</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+                <div class="ms-lg-3 mt-3 mt-lg-0">
+                    <button class="btn btn-ticket">Get Tickets</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 hero-content">
+                    <h1>Find Your Next <span style="color: var(--light-blue);">Experience</span></h1>
+                    <p>Discover the best events, concerts, and shows happening near you. Get your tickets now and create unforgettable memories.</p>
+                    <button class="btn btn-ticket">Explore Events</button>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block">
+                    <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Concert" class="img-fluid rounded-3 animate" style="animation-delay: 0.4s;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section class="events">
+        <div class="container">
+            <h2 class="section-title">Upcoming Events</h2>
+            <div class="row">
+                <div class="col-md-6 col-lg-4">
+                    <div class="event-card animate">
+                        <div class="event-img position-relative">
+                            <img src="https://images.unsplash.com/photo-1464375117522-1311d6a5b81f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Concert">
+                            <div class="event-date">June 15, 2023</div>
+                        </div>
+                        <div class="event-content">
+                            <h3>Summer Music Festival</h3>
+                            <p>Join us for the biggest music festival of the year featuring top artists from around the world.</p>
+                            <button class="btn btn-ticket">Buy Tickets</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="event-card animate">
+                        <div class="event-img position-relative">
+                            <img src="https://images.unsplash.com/photo-1501281667305-0d4ebd5b3c36?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Theater">
+                            <div class="event-date">June 22, 2023</div>
+                        </div>
+                        <div class="event-content">
+                            <h3>Broadway Show: Hamilton</h3>
+                            <p>Experience the award-winning Broadway musical that has taken the world by storm.</p>
+                            <button class="btn btn-ticket">Buy Tickets</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="event-card animate">
+                        <div class="event-img position-relative">
+                            <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Sports">
+                            <div class="event-date">July 5, 2023</div>
+                        </div>
+                        <div class="event-content">
+                            <h3>Basketball Championship</h3>
+                            <p>Watch the finals of the national basketball championship with the top two teams competing.</p>
+                            <button class="btn btn-ticket">Buy Tickets</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Events Slider -->
+    <section class="featured-events">
+        <div class="container">
+            <h2 class="section-title">Featured Events</h2>
+            <div class="glide">
+                <div class="glide__track" data-glide-el="track">
+                    <ul class="glide__slides">
+                        <li class="glide__slide">
+                            <div class="event-card">
+                                <div class="event-img position-relative">
+                                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Yoga Event">
+                                    <div class="event-date">July 12, 2023</div>
+                                </div>
+                                <div class="event-content">
+                                    <h3>Sunset Yoga Session</h3>
+                                    <p>Relax and rejuvenate with a peaceful yoga session at the beach during sunset.</p>
+                                    <button class="btn btn-ticket">Buy Tickets</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="glide__slide">
+                            <div class="event-card">
+                                <div class="event-img position-relative">
+                                    <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Art Exhibition">
+                                    <div class="event-date">July 18, 2023</div>
+                                </div>
+                                <div class="event-content">
+                                    <h3>Modern Art Exhibition</h3>
+                                    <p>Explore contemporary artworks from emerging artists around the world.</p>
+                                    <button class="btn btn-ticket">Buy Tickets</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="glide__slide">
+                            <div class="event-card">
+                                <div class="event-img position-relative">
+                                    <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Concert">
+                                    <div class="event-date">July 25, 2023</div>
+                                </div>
+                                <div class="event-content">
+                                    <h3>Jazz Night Live</h3>
+                                    <p>Enjoy an evening of smooth jazz performances by renowned musicians.</p>
+                                    <button class="btn btn-ticket">Buy Tickets</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="glide__arrows" data-glide-el="controls">
+                    <button class="glide__arrow glide__arrow--left" data-glide-dir="<"><i class="fas fa-chevron-left"></i></button>
+                    <button class="glide__arrow glide__arrow--right" data-glide-dir=">"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing">
+        <div class="container">
+            <h2 class="section-title">Ticket Packages</h2>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="pricing-card animate">
+                        <h3>General Admission</h3>
+                        <div class="price">$49.99</div>
+                        <ul class="pricing-features">
+                            <li>Standard Event Access</li>
+                            <li>One Day Pass</li>
+                            <li>General Seating</li>
+                            <li>Event Program</li>
+                        </ul>
+                        <button class="btn btn-ticket">Select Plan</button>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="pricing-card animate">
+                        <h3>VIP Experience</h3>
+                        <div class="price">$99.99</div>
+                        <ul class="pricing-features">
+                            <li>Premium Event Access</li>
+                            <li>Two Day Pass</li>
+                            <li>Reserved Seating</li>
+                            <li>Backstage Tour</li>
+                            <li>Meet & Greet</li>
+                        </ul>
+                        <button class="btn btn-ticket">Select Plan</button>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="pricing-card animate">
+                        <h3>Platinum Package</h3>
+                        <div class="price">$149.99</div>
+                        <ul class="pricing-features">
+                            <li>All Access Pass</li>
+                            <li>Full Event Access</li>
+                            <li>Front Row Seating</li>
+                            <li>Exclusive Merchandise</li>
+                            <li>Dining Experience</li>
+                        </ul>
+                        <button class="btn btn-ticket">Select Plan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 footer-links">
+                    <h5>TicketWave</h5>
+                    <p>Your premier destination for event tickets and unforgettable experiences.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-2 footer-links">
+                    <h5>Quick Links</h5>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Events</a></li>
+                        <li><a href="#">Venues</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 footer-links">
+                    <h5>Popular Events</h5>
+                    <ul>
+                        <li><a href="#">Music Festivals</a></li>
+                        <li><a href="#">Sports Events</a></li>
+                        <li><a href="#">Theater Shows</a></li>
+                        <li><a href="#">Conferences</a></li>
+                        <li><a href="#">Exhibitions</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 footer-links">
+                    <h5>Contact Us</h5>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt me-2"></i> 123 Event Street, City</li>
+                        <li><i class="fas fa-phone me-2"></i> (123) 456-7890</li>
+                        <li><i class="fas fa-envelope me-2"></i> info@ticketwave.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 TicketWave. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Glide.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/glide.min.js"></script>
+    <!-- Custom JS -->
+    <script>
+        // Initialize Glide.js
+        new Glide('.glide', {
+            type: 'carousel',
+            perView: 3,
+            focusAt: 'center',
+            gap: 30,
+            breakpoints: {
+                992: {
+                    perView: 2
+                },
+                768: {
+                    perView: 1
+                }
+            }
+        }).mount();
+
+        // Sticky navbar
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.padding = '10px 0';
+                navbar.style.background = 'rgba(10, 25, 47, 0.95)';
+            } else {
+                navbar.style.padding = '15px 0';
+                navbar.style.background = 'rgba(10, 25, 47, 0.8)';
+            }
+        });
+
+        // Animation on scroll
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.animate');
+            elements.forEach(element => {
+                const position = element.getBoundingClientRect();
+                if (position.top < window.innerHeight - 100) {
+                    element.classList.add('animated');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+    </script>
+</body>
+</html>

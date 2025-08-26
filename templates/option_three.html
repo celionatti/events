@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventHub - The Ultimate Event Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #0066ff;
+            --secondary-blue: #3380ff;
+            --accent-blue: #66a3ff;
+            --dark-bg: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphic Navbar */
+        .navbar-custom {
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+            padding: 1rem 0;
+        }
+
+        .navbar-custom.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            padding: 0.5rem 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-link {
+            color: var(--text-primary) !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            margin: 0 5px;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-blue) !important;
+            transform: translateY(-2px);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue));
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .btn-host-event {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            border: none;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .btn-host-event:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 102, 255, 0.3);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="%23ffffff" opacity="0.1"/><circle cx="80" cy="40" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="40" cy="80" r="1.5" fill="%23ffffff" opacity="0.1"/><circle cx="90" cy="10" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="10" cy="90" r="2" fill="%23ffffff" opacity="0.1"/></svg>');
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideInUp 1s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            animation: slideInUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            animation: slideInUp 1s ease-out 0.6s both;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            border: none;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0, 102, 255, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 102, 255, 0.4);
+            background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
+        }
+
+        .cta-secondary {
+            background: transparent;
+            border: 2px solid var(--accent-blue);
+            padding: 13px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.4s ease;
+            color: var(--accent-blue);
+        }
+
+        .cta-secondary:hover {
+            background: var(--accent-blue);
+            color: var(--text-primary);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(102, 163, 255, 0.3);
+        }
+
+        /* Search Section */
+        .search-section {
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 3rem 0;
+            margin-top: -50px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-container {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .search-form {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+
+        .search-field {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-field label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .search-field input,
+        .search-field select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .search-field input:focus,
+        .search-field select:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            height: fit-content;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 102, 255, 0.3);
+        }
+
+        /* Event Grid Section */
+        .events-grid {
+            padding: 100px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 25px;
+            border-radius: 25px;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .filter-tab.active,
+        .filter-tab:hover {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+            color: white;
+        }
+
+        /* Enhanced Event Cards */
+        .event-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: 100%;
+            position: relative;
+        }
+
+        .event-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(0, 102, 255, 0.3);
+            border-color: var(--accent-blue);
+        }
+
+        .event-image {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .event-card:hover .event-image::before {
+            opacity: 1;
+        }
+
+        .event-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--success-color);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .event-status.limited {
+            background: var(--warning-color);
+            color: var(--dark-bg);
+        }
+
+        .event-status.sold-out {
+            background: #dc3545;
+        }
+
+        .event-content {
+            padding: 1.5rem;
+        }
+
+        .event-organizer {
+            color: var(--accent-blue);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .event-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .event-detail {
+            display: flex;
+            align-items: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .event-detail i {
+            width: 16px;
+            margin-right: 8px;
+            color: var(--accent-blue);
+        }
+
+        .event-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .event-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .price-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: block;
+        }
+
+        .btn-book {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            border: none;
+            padding: 8px 20px;
+            border-radius: 25px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-book:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 102, 255, 0.3);
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, var(--card-bg) 0%, #252525 100%);
+            padding: 80px 0;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 2rem 1rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Organizer Section */
+        .organizer-section {
+            padding: 100px 0;
+            background: var(--dark-bg);
+        }
+
+        .organizer-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .organizer-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 20px 40px rgba(0, 102, 255, 0.2);
+        }
+
+        .organizer-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: white;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            padding: 60px 0 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-icons a {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 48px;
+            margin: 0 10px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+            transform: translateY(-5px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .cta-button,
+            .cta-secondary {
+                padding: 12px 25px;
+                font-size: 0.9rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .search-form {
+                flex-direction: column;
+            }
+            
+            .search-field {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .search-container {
+                padding: 1.5rem;
+            }
+            
+            .events-grid {
+                padding: 60px 0;
+            }
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home">
+                <i class="fas fa-calendar-alt me-2"></i>EventHub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-bars text-white"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#events">Browse Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#categories">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#organizers">For Organizers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="#" class="nav-link">Sign In</a>
+                    <button class="btn btn-host-event">Host an Event</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <h1 class="hero-title">Where Events Come Alive</h1>
+                        <p class="hero-subtitle">Connect event organizers with passionate attendees. Discover amazing experiences or host your own unforgettable event on our platform.</p>
+                        <div class="hero-buttons">
+                            <button class="btn cta-button">
+                                <i class="fas fa-search me-2"></i>Find Events
+                            </button>
+                            <button class="btn cta-secondary">
+                                <i class="fas fa-plus me-2"></i>Create Event
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block">
+                    <div class="text-center">
+                        <i class="fas fa-users" style="font-size: 12rem; color: var(--accent-blue); opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-container fade-in">
+                <h3 class="text-center mb-4">Find Your Perfect Event</h3>
+                <form class="search-form">
+                    <div class="search-field">
+                        <label>What are you looking for?</label>
+                        <input type="text" placeholder="Event name or keyword">
+                    </div>
+                    <div class="search-field">
+                        <label>Location</label>
+                        <input type="text" placeholder="City or venue">
+                    </div>
+                    <div class="search-field">
+                        <label>Category</label>
+                        <select>
+                            <option>All Categories</option>
+                            <option>Music & Concerts</option>
+                            <option>Sports</option>
+                            <option>Theater & Arts</option>
+                            <option>Business</option>
+                            <option>Food & Drink</option>
+                            <option>Technology</option>
+                        </select>
+                    </div>
+                    <div class="search-field">
+                        <label>Date</label>
+                        <input type="date">
+                    </div>
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Grid Section -->
+    <section id="events" class="events-grid">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title">Trending Events</h2>
+                <p class="section-subtitle">Discover the most popular events happening near you, hosted by amazing organizers from around the world.</p>
+            </div>
+
+            <div class="filter-tabs fade-in">
+                <button class="filter-tab active">All Events</button>
+                <button class="filter-tab">This Week</button>
+                <button class="filter-tab">This Month</button>
+                <button class="filter-tab">Free Events</button>
+                <button class="filter-tab">Premium</button>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4 fade-in">
+                    <div class="event-card">
+                        <div class="event-image">
+                            <i class="fas fa-music"></i>
+                            <div class="event-status">Available</div>
+                        </div>
+                        <div class="event-content">
+                            <div class="event-organizer">
+                                <i class="fas fa-user-circle me-1"></i> SoundWave Productions
+                            </div>
+                            <h5 class="event-title">Electric Summer Music Festival</h5>
+                            <div class="event-details">
+                                <div class="event-detail">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>August 15-17, 2024</span>
+                                </div>
+                                <div class="event-detail">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Central Park, New York</span>
+                                </div>
+                                <div class="event-detail">
+                                    <i class="fas fa-users"></i>
+                                    <span>5,000+ attendees expected</span>
+                                </div>
+                            </div>
+                            <div class="event-footer">
+                                <div>
+                                    <span class="price-label">Starting from</span>
+                                    <div class="event-price">$89.99</div>
+                                </div>
+                                <button class="btn btn-book">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4 fade-in">
+                    <div class="event-card">
+                        <div class="event-image">
+                            <i class="fas fa-microphone"></i>
+                            <div class="event-status limited">Limited Seats</div>
+                        </div>
+                        <div class="event-content">
+                            <div class="event-organizer">
+                                <i class="fas fa-user-circle me-1"></i> Comedy Central Live
+                            </div>
+                            <h5 class="event-title">Stand-Up Comedy Night</h5>
+                            <div class="event-details">
+                                <div class="event-detail">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>August 28, 2024</span>
+                                </div>
+                                <div class="event-detail">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Comedy Club Downtown</span>
+                                </div>
+                                <div class="event-detail">
+                                    <i class="fas fa-clock"></i>
+                                    <span>8:00 PM - 11:00 PM</span>
+                                </div>
+                            </div>
+                            <div class="event-footer">
+                                <div>
+                                    <span class="price-label">Per person</span>
+                                    <div class="event-price">$45.00</div>
+                                </div>
+                                <button class="btn btn-book">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4 fade-in">
+                    <div class="event-card">
+                        <div class="event-image">
+                            <i class="fas fa-dumbbell"></i>
+                            <div class="event-status">Available</div>
+                        </div>
+                        <div class="event-content">
+                            <div class="event-organizer">
+                                <i class="fas fa-user-circle me-1"></i> FitLife Events
+                            </div>
+                            <h5 class="event-title">Marathon Training Workshop</h5>
+                            <div class="event-details">
+                                <div class="event-detail">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>September 5, 2024</span>
+                                </div>
+                                <div class="event-detail">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>City Sports Complex</span>
+                                </div>
+                                <div class="event-detail">
+                                    <i class="fas fa-medal"></i>
+                                    <span>Certificate included</span>
+                                </div>
+                            </div>
+                            <div class="event-footer">
+                                <div>
+                                    <span class="price-label">Workshop fee</span>
+                                    <div class="event-price">$75.00</div>
+                                </div>
+                                <button class="btn btn-book">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4 fade-in">
+                    <div class="event-card">
+                        <div class="event-image">
+                            <i class="fas fa-palette"></i>
+                            <div class="event-status">Available</div>
+                        </div>
+                        <div class="event-content">
+                            <div class="event-organizer">
+                                <i class="fas fa-user-circle me-1"></i> Art Gallery Collective
+                            </div>
+                            <h5 class="event-title">Contemporary Art Exhibition</h5>
+                            <div class="event-details">
+                                <div class="event-detail">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>September 10-30, 2024</span>
+                                </div>
+                                <div class="event-detail">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Metropolitan Art Center</span>
+                                </div>
+                                <div class="event-detail">
+                                    <i class="fas fa-paint-brush"></i>
+                                    <span>50+ featured artists</span>
+                                </div>
+                            </div>
+                            <div class="event-footer">
+                                <div>
+                                    <span class="price-label">Admission</span>
+                                    <div class="event-price">$25.00</div>
+                                </div>
+                                <button class="btn btn-book">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4 fade-in">
+                    <div class="event-card">
+                        <div class="event-image">
+                            <i class="fas fa-laptop-code"></i>
+                            <div class="event-status">Available</div>
+                        </div>
+                        <div class="event-content">
+                            <div class="event-organizer">
+                                <i class="fas fa-user-circle me-1"></i> TechMeet Organization
+                            </div>
+                            <h5 class="event-title">Web Development Conference</h5>
+                            <div class="event-details">
+                                <div class="event-detail">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>September 20-22, 2024</span>
+                                </div>
+                                <div class="event-detail">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Tech Convention Center</span>
+                                </div>
+                                <div class="event-detail">
+                                    <i class="fas fa-certificate"></i>
+                                    <span>CPD certified</span>
+                                </div>
+                            </div>
+                            <div class="event-footer">
+                                <div>
+                                    <span class="price-label">Full access</span>
+                                    <div class="event-price">$299.00</div>
+                                </div>
+                                <button class="btn btn-book">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4 fade-in">
+                    <div class="event-card">
+                        <div class="event-image">
+                            <i class="fas fa-utensils"></i>
+                            <div class="event-status limited">Few Spots Left</div>
+                        </div>
+                        <div class="event-content">
+                            <div class="event-organizer">
+                                <i class="fas fa-user-circle me-1"></i> Culinary Masters
+                            </div>
+                            <h5 class="event-title">Gourmet Cooking Masterclass</h5>
+                            <div class="event-details">
+                                <div class="event-detail">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>August 30, 2024</span>
+                                </div>
+                                <div class="event-detail">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Chef's Academy Kitchen</span>
+                                </div>
+                                <div class="event-detail">
+                                    <i class="fas fa-user-friends"></i>
+                                    <span>Max 20 participants</span>
+                                </div>
+                            </div>
+                            <div class="event-footer">
+                                <div>
+                                    <span class="price-label">Per person</span>
+                                    <div class="event-price">$150.00</div>
+                                </div>
+                                <button class="btn btn-book">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5 fade-in">
+                <button class="btn cta-button">
+                    <i class="fas fa-th-large me-2"></i>View All Events
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-container fade-in">
+                <div class="stat-item">
+                    <span class="stat-number">50K+</span>
+                    <div class="stat-label">Events Hosted</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">2M+</span>
+                    <div class="stat-label">Happy Attendees</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">15K+</span>
+                    <div class="stat-label">Event Organizers</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">500+</span>
+                    <div class="stat-label">Cities Worldwide</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section id="categories" class="events-grid">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title">Event Categories</h2>
+                <p class="section-subtitle">From intimate workshops to massive festivals, find events that match your interests.</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4 fade-in">
+                    <div class="organizer-card">
+                        <div class="organizer-icon">
+                            <i class="fas fa-music"></i>
+                        </div>
+                        <h5>Music & Entertainment</h5>
+                        <p class="text-muted mb-3">Concerts, festivals, DJ nights, and live performances</p>
+                        <small class="text-secondary">12,500+ events</small>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 fade-in">
+                    <div class="organizer-card">
+                        <div class="organizer-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <h5>Business & Networking</h5>
+                        <p class="text-muted mb-3">Conferences, seminars, workshops, and meetups</p>
+                        <small class="text-secondary">8,200+ events</small>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 fade-in">
+                    <div class="organizer-card">
+                        <div class="organizer-icon">
+                            <i class="fas fa-running"></i>
+                        </div>
+                        <h5>Sports & Fitness</h5>
+                        <p class="text-muted mb-3">Tournaments, training sessions, and fitness events</p>
+                        <small class="text-secondary">6,800+ events</small>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 fade-in">
+                    <div class="organizer-card">
+                        <div class="organizer-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h5>Arts & Culture</h5>
+                        <p class="text-muted mb-3">Exhibitions, theater shows, and cultural events</p>
+                        <small class="text-secondary">4,600+ events</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- For Organizers Section -->
+    <section id="organizers" class="organizer-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 fade-in">
+                    <h2 class="section-title text-start">Host Your Event with Confidence</h2>
+                    <p class="mb-4">Join thousands of successful event organizers who trust EventHub to bring their vision to life. Our platform provides everything you need to create, promote, and manage unforgettable events.</p>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="organizer-icon" style="width: 50px; height: 50px; font-size: 1.2rem; margin-right: 15px; margin-bottom: 0;">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Real-time Analytics</h6>
+                                    <small class="text-muted">Track sales and attendee engagement</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="organizer-icon" style="width: 50px; height: 50px; font-size: 1.2rem; margin-right: 15px; margin-bottom: 0;">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Secure Payments</h6>
+                                    <small class="text-muted">Multiple payment options supported</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="organizer-icon" style="width: 50px; height: 50px; font-size: 1.2rem; margin-right: 15px; margin-bottom: 0;">
+                                    <i class="fas fa-bullhorn"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Marketing Tools</h6>
+                                    <small class="text-muted">Promote your events effectively</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="organizer-icon" style="width: 50px; height: 50px; font-size: 1.2rem; margin-right: 15px; margin-bottom: 0;">
+                                    <i class="fas fa-headset"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">24/7 Support</h6>
+                                    <small class="text-muted">Dedicated support team</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3">
+                        <button class="btn cta-button">
+                            <i class="fas fa-plus me-2"></i>Create Your First Event
+                        </button>
+                        <button class="btn cta-secondary">
+                            <i class="fas fa-play me-2"></i>Watch Demo
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-6 fade-in">
+                    <div class="organizer-card">
+                        <div class="organizer-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h5 class="mb-3">Ready to Get Started?</h5>
+                        <p class="mb-4">Create your organizer account and publish your first event in minutes. No setup fees, just a small commission on successful ticket sales.</p>
+                        
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Setup & Publishing</span>
+                                <span class="text-success">FREE</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Marketing & Promotion</span>
+                                <span class="text-success">FREE</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Payment Processing</span>
+                                <span>2.9% + $0.30</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span>Platform Commission</span>
+                                <span>3.5%</span>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary w-100">Start Hosting Events</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="events-grid">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title">Why Choose EventHub?</h2>
+                <p class="section-subtitle">We're the trusted platform connecting passionate event organizers with eager attendees worldwide.</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 mb-4 fade-in">
+                    <div class="organizer-card h-100">
+                        <div class="organizer-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h5>Secure & Reliable</h5>
+                        <p class="text-muted">Bank-level security for all transactions with fraud protection and secure payment processing.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4 fade-in">
+                    <div class="organizer-card h-100">
+                        <div class="organizer-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h5>Global Reach</h5>
+                        <p class="text-muted">Connect with attendees from around the world and expand your event's reach internationally.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4 fade-in">
+                    <div class="organizer-card h-100">
+                        <div class="organizer-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h5>Mobile First</h5>
+                        <p class="text-muted">Optimized mobile experience for both organizers and attendees with instant digital tickets.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="mb-3">
+                        <i class="fas fa-calendar-alt me-2"></i>EventHub
+                    </h5>
+                    <p class="text-muted">The world's leading platform for discovering and hosting amazing events. Connecting communities through unforgettable experiences since 2024.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="mb-3">For Attendees</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-muted text-decoration-none">Browse Events</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Event Categories</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Mobile App</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Gift Cards</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="mb-3">For Organizers</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-muted text-decoration-none">Host Events</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Pricing</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Resources</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Success Stories</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="mb-3">Support</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-muted text-decoration-none">Help Center</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Contact Us</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Refund Policy</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Community</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="mb-3">Company</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-muted text-decoration-none">About Us</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Careers</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Press</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Terms & Privacy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr style="border-color: rgba(255,255,255,0.1);">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="text-muted mb-0">&copy; 2024 EventHub. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="text-muted mb-0">Made with <i class="fas fa-heart text-danger"></i> for event lovers worldwide</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar-custom');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offsetTop = target.offsetTop - 80;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Filter tabs functionality
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Here you would typically filter the events based on the selected tab
+                // For demo purposes, we'll just show a console log
+                console.log('Filter selected:', this.textContent);
+            });
+        });
+
+        // Hero button functionality
+        document.querySelector('.cta-button').addEventListener('click', function() {
+            document.querySelector('#events').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+
+        document.querySelector('.cta-secondary').addEventListener('click', function() {
+            document.querySelector('#organizers').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+
+        // Add hover effects to buttons and cards
+        document.querySelectorAll('.btn, .event-card, .organizer-card').forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                if (this.classList.contains('btn')) {
+                    this.style.transform = 'translateY(-2px)';
+                }
+            });
+            
+            element.addEventListener('mouseleave', function() {
+                if (this.classList.contains('btn')) {
+                    this.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        // Search form submission
+        document.querySelector('.search-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Here you would typically handle the search functionality
+            console.log('Search submitted');
+            alert('Search functionality would be implemented here!');
+        });
+
+        // Book now button functionality
+        document.querySelectorAll('.btn-book').forEach(button => {
+            button.addEventListener('click', function() {
+                // Here you would typically handle the booking process
+                console.log('Book now clicked');
+                alert('Booking process would be implemented here!');
+            });
+        });
+
+        // Host event button functionality
+        document.querySelectorAll('.btn-host-event, [data-action="host-event"]').forEach(button => {
+            button.addEventListener('click', function() {
+                // Here you would typically redirect to the event creation page
+                console.log('Host event clicked');
+                alert('Event creation form would open here!');
+            });
+        });
+
+        // Counter animation for stats
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            counters.forEach(counter => {
+                const target = counter.textContent;
+                const numericValue = parseInt(target.replace(/\D/g, ''));
+                const suffix = target.replace(/\d/g, '');
+                
+                let current = 0;
+                const increment = numericValue / 100;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= numericValue) {
+                        counter.textContent = target;
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = Math.floor(current) + suffix;
+                    }
+                }, 20);
+            });
+        }
+
+        // Trigger counter animation when stats section becomes visible
+        const statsSection = document.querySelector('.stats-section');
+        if (statsSection) {
+            const statsObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounters();
+                        statsObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            statsObserver.observe(statsSection);
+        }
+    </script>
+</body>
+</html>

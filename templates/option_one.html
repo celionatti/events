@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PulseTickets — Find. Click. Party.</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Glide.js CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.core.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.theme.min.css">
+
+  <style>
+    :root{
+      /* Three blues: light, mid, deep */
+      --blue-1:#64B5F6;
+      --blue-2:#1E88E5;
+      --blue-3:#0D47A1;
+      /* Base dark palette */
+      --bg-0:#0B1220;
+      --bg-1:#0E1526;
+      --bg-2:#101A30;
+      --text-1:#E2E8F0;
+      --text-2:#9FB3C8;
+      --glass:white;
+      --radius-lg:18px;
+      --radius-md:14px;
+      --radius-sm:10px;
+      --shadow-1: 0 10px 30px rgba(0,0,0,.35);
+      --shadow-2: 0 6px 18px rgba(0,0,0,.25);
+      --shadow-focus: 0 0 0 .25rem rgba(30,136,229,.35);
+    }
+
+    html{ scroll-behavior:smooth; }
+    body{
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:
+        radial-gradient(1200px 600px at 75% -100px, rgba(30,136,229,.25), transparent 70%),
+        radial-gradient(800px 400px at -10% 20%, rgba(13,71,161,.25), transparent 60%),
+        linear-gradient(180deg, var(--bg-0), var(--bg-1) 30%, var(--bg-2) 100%);
+      color:var(--text-1);
+      overflow-x:hidden;
+    }
+
+    /* Glassmorphic sticky navbar */
+    .navbar-glass{
+      position:sticky; top:0; z-index:1030;
+      background: rgba(13,19,35,.48);
+      backdrop-filter: saturate(1.2) blur(14px);
+      -webkit-backdrop-filter: saturate(1.2) blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .navbar .nav-link{ color:var(--text-2); transition:.25s ease; }
+    .navbar .nav-link:hover, .navbar .nav-link:focus{ color:var(--blue-1); }
+    .brand-mark{
+      display:inline-grid; place-items:center; width:36px; height:36px;
+      background: linear-gradient(135deg, var(--blue-2), var(--blue-3));
+      border-radius:10px; color:white; font-weight:800; letter-spacing:.5px;
+      box-shadow: var(--shadow-2);
+    }
+
+    /* Primary button (custom) */
+    .btn-pulse{
+      --c1: var(--blue-2); --c2: var(--blue-3);
+      background: linear-gradient(135deg, var(--c1), var(--c2));
+      color:white; border:none; border-radius:14px; padding:.75rem 1.1rem;
+      box-shadow: 0 8px 22px rgba(30,136,229,.35);
+      transition: transform .15s ease, box-shadow .3s ease, filter .3s ease;
+    }
+    .btn-pulse:hover{ transform: translateY(-2px); filter:brightness(1.05); }
+    .btn-pulse:focus{ box-shadow: var(--shadow-focus); outline: none; }
+    .btn-ghost{
+      color: var(--blue-1);
+      border: 1px solid rgba(100,181,246,.35);
+      background: rgba(255,255,255,.03);
+      border-radius:14px;
+      transition:.25s ease;
+    }
+    .btn-ghost:hover{ background: rgba(100,181,246,.1); color:white; }
+
+    /* Hero */
+    .hero{
+      position:relative; padding: 6rem 0 2rem;
+    }
+    .hero h1{
+      font-size: clamp(2rem, 2.4rem + 1.5vw, 4rem);
+      line-height:1.05;
+      letter-spacing:.2px;
+      text-shadow: 0 6px 24px rgba(12,35,82,.45);
+    }
+    .hero p.lead{ color:var(--text-2); }
+
+    /* Card styles */
+    .event-card{
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius-lg);
+      overflow:hidden;
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+      box-shadow: var(--shadow-1);
+    }
+    .event-card:hover{ transform: translateY(-6px); border-color: rgba(100,181,246,.35); }
+    .event-img{
+      aspect-ratio: 16/9; object-fit: cover; width:100%;
+      filter: saturate(1.05) contrast(1.05);
+    }
+    .chip{
+      display:inline-flex; align-items:center; gap:.35rem; font-size:.8rem;
+      padding:.35rem .6rem; border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(13,71,161,.18);
+      color: var(--blue-1);
+    }
+
+    /* Sections */
+    section{ scroll-margin-top: 90px; }
+    .section-title{
+      font-weight:800; letter-spacing:.3px; margin-bottom: .5rem;
+    }
+    .section-sub{ color:var(--text-2); }
+
+    /* Pricing */
+    .price-card{
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.09);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform .25s ease, border-color .25s ease;
+    }
+    .price-card:hover{ transform: translateY(-6px); border-color: rgba(100,181,246,.35); }
+    .price-badge{
+      position:absolute; top:14px; right:14px;
+      background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
+      color:#021024; font-weight:700; padding:.3rem .6rem; border-radius:10px; font-size:.8rem;
+    }
+
+    /* Testimonial */
+    .testimonial{
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.5rem;
+    }
+
+    /* Footer */
+    footer{
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.25);
+    }
+
+    /* Animations (on-scroll) */
+    .reveal{ opacity:0; transform: translateY(18px) scale(.98); transition: all .7s cubic-bezier(.2,.65,.2,1); }
+    .reveal.in{ opacity:1; transform: none; }
+    .delay-1{ transition-delay: .08s; } .delay-2{ transition-delay: .16s; } .delay-3{ transition-delay: .24s; }
+    .spin-bubble{
+      position:absolute; inset:auto auto -120px -120px; width:380px; height:380px; border-radius:50%;
+      background: radial-gradient(closest-side, rgba(30,136,229,.28), transparent);
+      filter: blur(14px); animation: float 12s ease-in-out infinite;
+    }
+    @keyframes float{ 0%{ transform: translateY(0) rotate(0); } 50%{ transform: translateY(-18px) rotate(12deg);} 100%{ transform: translateY(0) rotate(0);} }
+
+    /* Accessibility: respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .reveal, .event-card, .price-card, .btn-pulse{ transition: none !important; }
+      .spin-bubble{ display:none; }
+      html{ scroll-behavior:auto; }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-glass">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+        <span class="brand-mark">PT</span>
+        <span class="fw-bold">PulseTickets</span>
+      </a>
+      <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileNav" aria-controls="mobileNav" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"><i class="bi bi-list fs-2"></i></span>
+      </button>
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+          <li class="nav-item"><a class="nav-link" href="#events">Events</a></li>
+          <li class="nav-item"><a class="nav-link" href="#pricing">Pricing</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#testimonials">Love</a></li>
+          <li class="nav-item"><a class="btn btn-pulse ms-lg-2" href="#get-tickets">Get Tickets</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- Offcanvas Mobile Nav -->
+  <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="mobileNav" aria-labelledby="mobileNavLabel" style="background:rgba(6,10,20,.98)">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="mobileNavLabel">PulseTickets</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <a class="nav-link py-2" href="#events" data-bs-dismiss="offcanvas">Events</a>
+      <a class="nav-link py-2" href="#pricing" data-bs-dismiss="offcanvas">Pricing</a>
+      <a class="nav-link py-2" href="#about" data-bs-dismiss="offcanvas">About</a>
+      <a class="nav-link py-2" href="#testimonials" data-bs-dismiss="offcanvas">Love</a>
+      <a class="btn btn-pulse w-100 mt-3" href="#get-tickets" data-bs-dismiss="offcanvas">Get Tickets</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="container position-relative">
+      <div class="row align-items-center gy-4">
+        <div class="col-lg-6 order-2 order-lg-1">
+          <h1 class="reveal">Discover. Book. Experience the Night.</h1>
+          <p class="lead mt-3 reveal delay-1">From live concerts to tech conferences, grab verified tickets fast with a silky-smooth checkout and instant mobile passes.</p>
+          <div class="d-flex gap-2 mt-3 reveal delay-2">
+            <a href="#events" class="btn btn-pulse"><i class="bi bi-lightning-charge-fill me-1"></i> Explore Events</a>
+            <a href="#how" class="btn btn-ghost"><i class="bi bi-play-circle me-1"></i> How it works</a>
+          </div>
+          <div class="spin-bubble" aria-hidden="true"></div>
+        </div>
+
+        <div class="col-lg-6 order-1 order-lg-2">
+          <!-- Glide Hero Carousel -->
+          <div class="glide reveal delay-1" id="heroGlide" aria-label="Featured slides">
+            <div class="glide__track" data-glide-el="track">
+              <ul class="glide__slides">
+                <li class="glide__slide">
+                  <img class="w-100 rounded-4" src="https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?q=80&w=1400&auto=format&fit=crop" alt="Crowd at live concert" style="box-shadow:var(--shadow-1);">
+                </li>
+                <li class="glide__slide">
+                  <img class="w-100 rounded-4" src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1400&auto=format&fit=crop" alt="Tech stage lights" style="box-shadow:var(--shadow-1);">
+                </li>
+                <li class="glide__slide">
+                  <img class="w-100 rounded-4" src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1400&auto=format&fit=crop" alt="DJ performing at festival" style="box-shadow:var(--shadow-1);">
+                </li>
+              </ul>
+            </div>
+            <div class="glide__arrows" data-glide-el="controls">
+              <button class="glide__arrow glide__arrow--left btn btn-ghost px-2 py-1" data-glide-dir="<" aria-label="Previous"><i class="bi bi-chevron-left"></i></button>
+              <button class="glide__arrow glide__arrow--right btn btn-ghost px-2 py-1" data-glide-dir=">" aria-label="Next"><i class="bi bi-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row gy-3 mt-4 text-center text-lg-start">
+        <div class="col-6 col-lg-3 reveal"><span class="chip"><i class="bi bi-shield-check"></i> Verified</span></div>
+        <div class="col-6 col-lg-3 reveal delay-1"><span class="chip"><i class="bi bi-phone"></i> Mobile Pass</span></div>
+        <div class="col-6 col-lg-3 reveal delay-2"><span class="chip"><i class="bi bi-credit-card-2-front"></i> Secure Pay</span></div>
+        <div class="col-6 col-lg-3 reveal delay-3"><span class="chip"><i class="bi bi-lightning-charge"></i> Fast Entry</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- EVENTS -->
+  <section id="events" class="py-5">
+    <div class="container">
+      <div class="row align-items-end mb-3">
+        <div class="col">
+          <h2 class="section-title reveal">Trending Events</h2>
+          <p class="section-sub reveal delay-1">Hot picks near you—freshly updated daily.</p>
+        </div>
+        <div class="col-auto reveal delay-2">
+          <div class="input-group">
+            <span class="input-group-text bg-transparent text-white border-secondary"><i class="bi bi-geo-alt"></i></span>
+            <input type="text" class="form-control text-white bg-transparent border-secondary" placeholder="Filter by city (e.g., Lagos)">
+            <button class="btn btn-ghost">Search</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <!-- Event Card 1 -->
+        <div class="col-12 col-md-6 col-xl-4 reveal">
+          <article class="event-card h-100 d-flex flex-column">
+            <img class="event-img" src="https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=1400&auto=format&fit=crop" alt="Afrobeats Live poster">
+            <div class="p-3 p-md-4">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="chip"><i class="bi bi-music-note-beamed"></i> Music</span>
+                <span class="text-info-emphasis small"><i class="bi bi-calendar-event"></i> Fri • Oct 10</span>
+              </div>
+              <h5 class="mb-1">Afrobeats Live: Midnight Wave</h5>
+              <p class="mb-3 text-secondary">Eko Convention Center, Lagos • 8:00 PM</p>
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge rounded-pill text-bg-primary">VIP</span>
+                  <span class="badge rounded-pill text-bg-info">Early Bird</span>
+                </div>
+                <button class="btn btn-pulse btn-sm" data-bs-toggle="modal" data-bs-target="#ticketModal" data-event="Afrobeats Live: Midnight Wave"><i class="bi bi-ticket-perforated me-1"></i> Get Tickets</button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Event Card 2 -->
+        <div class="col-12 col-md-6 col-xl-4 reveal delay-1">
+          <article class="event-card h-100 d-flex flex-column">
+            <img class="event-img" src="https://images.unsplash.com/photo-1557800636-894a64c1696f?q=80&w=1400&auto=format&fit=crop" alt="TechCon Africa poster">
+            <div class="p-3 p-md-4">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="chip"><i class="bi bi-cpu"></i> Tech</span>
+                <span class="text-info-emphasis small"><i class="bi bi-calendar-event"></i> Sat • Nov 2</span>
+              </div>
+              <h5 class="mb-1">TechCon Africa 2025</h5>
+              <p class="mb-3 text-secondary">Landmark Centre, Lagos • 9:00 AM</p>
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge rounded-pill text-bg-primary">Pro</span>
+                  <span class="badge rounded-pill text-bg-info">Startup</span>
+                </div>
+                <button class="btn btn-pulse btn-sm" data-bs-toggle="modal" data-bs-target="#ticketModal" data-event="TechCon Africa 2025"><i class="bi bi-ticket-perforated me-1"></i> Get Tickets</button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Event Card 3 -->
+        <div class="col-12 col-md-6 col-xl-4 reveal delay-2">
+          <article class="event-card h-100 d-flex flex-column">
+            <img class="event-img" src="https://images.unsplash.com/photo-148atz-1?q=80&w=1400&auto=format&fit=crop" alt="Comedy Night poster" onerror="this.src='https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1400&auto=format&fit=crop'">
+            <div class="p-3 p-md-4">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="chip"><i class="bi bi-emoji-laughing"></i> Comedy</span>
+                <span class="text-info-emphasis small"><i class="bi bi-calendar-event"></i> Sun • Dec 14</span>
+              </div>
+              <h5 class="mb-1">Laughs & Lagos</h5>
+              <p class="mb-3 text-secondary">Terra Kulture Arena, Lagos • 7:30 PM</p>
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge rounded-pill text-bg-primary">Front Row</span>
+                  <span class="badge rounded-pill text-bg-info">General</span>
+                </div>
+                <button class="btn btn-pulse btn-sm" data-bs-toggle="modal" data-bs-target="#ticketModal" data-event="Laughs & Lagos"><i class="bi bi-ticket-perforated me-1"></i> Get Tickets</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="text-center mt-4 reveal delay-3">
+        <a href="#get-tickets" class="btn btn-ghost"><i class="bi bi-collection-play me-2"></i>View all events</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="py-5">
+    <div class="container">
+      <div class="row text-center mb-4">
+        <h2 class="section-title reveal">How it works</h2>
+        <p class="section-sub reveal delay-1">Find an event, pick a seat, pay securely—done.</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-12 col-md-4 reveal">
+          <div class="price-card h-100">
+            <i class="bi bi-search fs-2 text-primary mb-2"></i>
+            <h5>Browse</h5>
+            <p class="text-secondary">Filter by city, category, and dates. Real-time availability with verified listings.</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-4 reveal delay-1">
+          <div class="price-card h-100">
+            <i class="bi bi-grid-1x2 fs-2 text-primary mb-2"></i>
+            <h5>Select</h5>
+            <p class="text-secondary">Choose seat tiers (VIP, General, Balcony) with clear pricing and perks.</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-4 reveal delay-2">
+          <div class="price-card h-100">
+            <i class="bi bi-shield-lock fs-2 text-primary mb-2"></i>
+            <h5>Checkout</h5>
+            <p class="text-secondary">Encrypted payments. Instantly receive wallet-ready mobile passes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="py-5">
+    <div class="container">
+      <div class="row text-center mb-4">
+        <h2 class="section-title reveal">Simple pricing</h2>
+        <p class="section-sub reveal delay-1">No surprises. Secure checkout. Refund options available.</p>
+      </div>
+
+      <div class="row g-4 align-items-stretch">
+        <!-- General -->
+        <div class="col-12 col-md-6 col-xl-4 reveal">
+          <div class="price-card h-100">
+            <span class="price-badge">Popular</span>
+            <h5 class="mb-1">General Admission</h5>
+            <p class="text-secondary">Great vibes at a great price.</p>
+            <div class="display-6 fw-bold text-white mb-3">₦15,000</div>
+            <ul class="list-unstyled small text-secondary">
+              <li><i class="bi bi-check2 text-primary me-1"></i> Floor access</li>
+              <li><i class="bi bi-check2 text-primary me-1"></i> Mobile e-ticket</li>
+              <li><i class="bi bi-check2 text-primary me-1"></i> Support 24/7</li>
+            </ul>
+            <button class="btn btn-pulse w-100 mt-2" data-bs-toggle="modal" data-bs-target="#ticketModal" data-tier="General">Choose</button>
+          </div>
+        </div>
+        <!-- VIP -->
+        <div class="col-12 col-md-6 col-xl-4 reveal delay-1">
+          <div class="price-card h-100">
+            <h5 class="mb-1">VIP</h5>
+            <p class="text-secondary">Priority access & lounge.</p>
+            <div class="display-6 fw-bold text-white mb-3">₦45,000</div>
+            <ul class="list-unstyled small text-secondary">
+              <li><i class="bi bi-check2 text-primary me-1"></i> Fast track entry</li>
+              <li><i class="bi bi-check2 text-primary me-1"></i> VIP bar & lounge</li>
+              <li><i class="bi bi-check2 text-primary me-1"></i> Premium view</li>
+            </ul>
+            <button class="btn btn-pulse w-100 mt-2" data-bs-toggle="modal" data-bs-target="#ticketModal" data-tier="VIP">Choose</button>
+          </div>
+        </div>
+        <!-- Group -->
+        <div class="col-12 col-md-12 col-xl-4 reveal delay-2">
+          <div class="price-card h-100">
+            <h5 class="mb-1">Group Packs</h5>
+            <p class="text-secondary">Save more with friends.</p>
+            <div class="display-6 fw-bold text-white mb-3">From ₦60,000</div>
+            <ul class="list-unstyled small text-secondary">
+              <li><i class="bi bi-check2 text-primary me-1"></i> 5–10 people</li>
+              <li><i class="bi bi-check2 text-primary me-1"></i> Reserved area</li>
+              <li><i class="bi bi-check2 text-primary me-1"></i> Early entry</li>
+            </ul>
+            <button class="btn btn-pulse w-100 mt-2" data-bs-toggle="modal" data-bs-target="#ticketModal" data-tier="Group">Choose</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="py-5">
+    <div class="container">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-6 reveal">
+          <img src="https://images.unsplash.com/photo-1521337585670-3f52f12a2d39?q=80&w=1400&auto=format&fit=crop" alt="People scanning tickets at the gate" class="w-100 rounded-4" style="box-shadow:var(--shadow-1);">
+        </div>
+        <div class="col-lg-6 reveal delay-1">
+          <h2 class="section-title">Built for speed, designed for trust</h2>
+          <p class="section-sub">Our ticketing engine is optimized for high-demand drops with wait-free checkout, fraud prevention, and QR-based entry that just works.</p>
+          <div class="row g-3 mt-2">
+            <div class="col-6">
+              <div class="testimonial h-100">
+                <div class="fw-bold"><i class="bi bi-shield-check text-primary"></i> Security</div>
+                <div class="small text-secondary">3-D Secure & PCI-DSS ready</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="testimonial h-100">
+                <div class="fw-bold"><i class="bi bi-graph-up text-primary"></i> Scale</div>
+                <div class="small text-secondary">Burst-ready infrastructure</div>
+              </div>
+            </div>
+          </div>
+          <a href="#get-tickets" class="btn btn-ghost mt-3">Start now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS (Glide) -->
+  <section id="testimonials" class="py-5">
+    <div class="container">
+      <h2 class="section-title text-center reveal">What fans say</h2>
+      <p class="section-sub text-center reveal delay-1 mb-4">Real people. Real experiences.</p>
+
+      <div class="glide reveal delay-2" id="loveGlide">
+        <div class="glide__track" data-glide-el="track">
+          <ul class="glide__slides">
+            <li class="glide__slide">
+              <div class="testimonial">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                  <img src="https://i.pravatar.cc/60?img=12" class="rounded-circle" alt="Customer A" width="48" height="48">
+                  <div>
+                    <div class="fw-bold">Tomiwa A.</div>
+                    <div class="small text-secondary">Lagos</div>
+                  </div>
+                </div>
+                <p class="mb-0">Fastest checkout I’ve used. Tickets in my wallet in seconds. 🤯</p>
+              </div>
+            </li>
+            <li class="glide__slide">
+              <div class="testimonial">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                  <img src="https://i.pravatar.cc/60?img=32" class="rounded-circle" alt="Customer B" width="48" height="48">
+                  <div>
+                    <div class="fw-bold">Adaeze K.</div>
+                    <div class="small text-secondary">Abuja</div>
+                  </div>
+                </div>
+                <p class="mb-0">Seats exactly as promised. Scanned once, we were in! 🔥</p>
+              </div>
+            </li>
+            <li class="glide__slide">
+              <div class="testimonial">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                  <img src="https://i.pravatar.cc/60?img=8" class="rounded-circle" alt="Customer C" width="48" height="48">
+                  <div>
+                    <div class="fw-bold">Emeka O.</div>
+                    <div class="small text-secondary">Port Harcourt</div>
+                  </div>
+                </div>
+                <p class="mb-0">Love the design. Smooth, fast, and trustworthy. 💙</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="glide__bullets" data-glide-el="controls[nav]">
+          <button class="glide__bullet" data-glide-dir="=0" aria-label="Slide 1"></button>
+          <button class="glide__bullet" data-glide-dir="=1" aria-label="Slide 2"></button>
+          <button class="glide__bullet" data-glide-dir="=2" aria-label="Slide 3"></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA / GET TICKETS -->
+  <section id="get-tickets" class="py-5">
+    <div class="container">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-7 reveal">
+          <h2 class="section-title">Ready to lock your spot?</h2>
+          <p class="section-sub">Checkout is built with Bootstrap components + custom styling for a polished, consistent experience.</p>
+          <ul class="list-unstyled small text-secondary">
+            <li><i class="bi bi-check2 text-primary me-1"></i> Works on any device</li>
+            <li><i class="bi bi-check2 text-primary me-1"></i> Email + Wallet pass</li>
+            <li><i class="bi bi-check2 text-primary me-1"></i> Secure payments</li>
+          </ul>
+          <button class="btn btn-pulse" data-bs-toggle="modal" data-bs-target="#ticketModal"><i class="bi bi-bag-check me-1"></i> Buy Tickets</button>
+        </div>
+        <div class="col-lg-5 reveal delay-1">
+          <div class="price-card">
+            <h5 class="mb-3">Quick Checkout</h5>
+            <form id="quickCheckout" novalidate>
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label">Event</label>
+                  <select class="form-select bg-transparent text-white border-secondary" required>
+                    <option value="" selected disabled>Choose event…</option>
+                    <option>Afrobeats Live: Midnight Wave</option>
+                    <option>TechCon Africa 2025</option>
+                    <option>Laughs & Lagos</option>
+                  </select>
+                  <div class="invalid-feedback">Please select an event.</div>
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Tier</label>
+                  <select class="form-select bg-transparent text-white border-secondary" required>
+                    <option value="" selected disabled>Tier…</option>
+                    <option>General</option>
+                    <option>VIP</option>
+                    <option>Group</option>
+                  </select>
+                  <div class="invalid-feedback">Choose a tier.</div>
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Qty</label>
+                  <input type="number" class="form-control bg-transparent text-white border-secondary" min="1" max="10" value="1" required/>
+                  <div class="invalid-feedback">1–10 only.</div>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Email</label>
+                  <input type="email" class="form-control bg-transparent text-white border-secondary" placeholder="you@example.com" required/>
+                  <div class="invalid-feedback">Enter a valid email.</div>
+                </div>
+              </div>
+              <button class="btn btn-pulse w-100 mt-3" type="submit">Continue</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKET MODAL -->
+  <div class="modal fade" id="ticketModal" tabindex="-1" aria-labelledby="ticketModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <form class="modal-content bg-dark text-white rounded-4">
+        <div class="modal-header border-0">
+          <h5 class="modal-title" id="ticketModalLabel"><i class="bi bi-ticket-perforated me-2"></i><span data-event-label>Tickets</span></h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body pt-0">
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label">Tier</label>
+              <select class="form-select bg-transparent text-white border-secondary" name="tier" required>
+                <option value="" selected disabled>Choose…</option>
+                <option>General</option>
+                <option>VIP</option>
+                <option>Group</option>
+              </select>
+            </div>
+            <div class="col-6">
+              <label class="form-label">Quantity</label>
+              <input class="form-control bg-transparent text-white border-secondary" type="number" name="qty" min="1" max="10" value="2" required>
+            </div>
+            <div class="col-6">
+              <label class="form-label">Promo Code</label>
+              <input class="form-control bg-transparent text-white border-secondary" type="text" name="promo" placeholder="Optional">
+            </div>
+            <div class="col-12">
+              <div class="d-flex justify-content-between small text-secondary">
+                <span>Subtotal</span> <span data-subtotal>₦0</span>
+              </div>
+              <div class="d-flex justify-content-between small text-secondary">
+                <span>Fees</span> <span data-fees>₦0</span>
+              </div>
+              <hr class="border-secondary">
+              <div class="d-flex justify-content-between fw-bold">
+                <span>Total</span> <span data-total>₦0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-pulse">Checkout</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="py-4">
+    <div class="container">
+      <div class="row align-items-center gy-3">
+        <div class="col-md-6">
+          <div class="d-flex align-items-center gap-2">
+            <span class="brand-mark">PT</span>
+            <div>
+              <div class="fw-bold">PulseTickets</div>
+              <div class="small text-secondary">© <span id="y"></span> PulseTickets. All rights reserved.</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <a href="#" class="text-decoration-none me-3 text-secondary">Terms</a>
+          <a href="#" class="text-decoration-none me-3 text-secondary">Privacy</a>
+          <a href="#top" class="text-decoration-none text-secondary"><i class="bi bi-arrow-up-circle"></i> Back to top</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap + Glide JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/glide.min.js"></script>
+
+  <script>
+    // Year in footer
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Initialize Glide sliders
+    new Glide('#heroGlide', {
+      type: 'carousel',
+      autoplay: 3500,
+      hoverpause: true,
+      animationDuration: 800,
+      perView: 1,
+      gap: 16,
+      keyboard: true
+    }).mount();
+
+    new Glide('#loveGlide', {
+      type: 'carousel',
+      autoplay: 4200,
+      animationDuration: 700,
+      perView: 2,
+      gap: 24,
+      breakpoints: {
+        992: { perView: 2 },
+        768: { perView: 1 }
+      }
+    }).mount();
+
+    // Sticky glass enhancement for shadow on scroll
+    const nav = document.querySelector('.navbar-glass');
+    const navShadow = () => {
+      if (window.scrollY > 8) {
+        nav.style.boxShadow = '0 6px 24px rgba(0,0,0,.35)';
+      } else {
+        nav.style.boxShadow = 'none';
+      }
+    };
+    navShadow(); window.addEventListener('scroll', navShadow);
+
+    // IntersectionObserver for reveal animations
+    const revealItems = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){ entry.target.classList.add('in'); io.unobserve(entry.target); }
+      });
+    }, { threshold: .14 });
+    revealItems.forEach(el => io.observe(el));
+
+    // Ticket modal: hydrate event title from triggers
+    const ticketModal = document.getElementById('ticketModal');
+    ticketModal.addEventListener('show.bs.modal', (e) => {
+      const btn = e.relatedTarget;
+      const evName = btn?.dataset.event || 'Tickets';
+      const tier = btn?.dataset.tier;
+      ticketModal.querySelector('[data-event-label]').textContent = evName;
+
+      // Preselect tier if provided
+      const tierSelect = ticketModal.querySelector('select[name="tier"]');
+      if(tier){
+        [...tierSelect.options].forEach(o => o.selected = (o.text === tier));
+      } else {
+        tierSelect.selectedIndex = 0;
+      }
+
+      // Reset counts & totals
+      ticketModal.querySelector('input[name="qty"]').value = 2;
+      updateTotals();
+    });
+
+    // Pricing logic for modal
+    const priceMap = { General: 15000, VIP: 45000, Group: 60000 };
+    const feesRate = 0.07; // 7% platform + payment
+
+    function formatNaira(n){ return new Intl.NumberFormat('en-NG', { style:'currency', currency:'NGN', maximumFractionDigits:0 }).format(n); }
+
+    function updateTotals(){
+      const tier = ticketModal.querySelector('select[name="tier"]').value;
+      const qty = parseInt(ticketModal.querySelector('input[name="qty"]').value || 0, 10);
+      const base = priceMap[tier] || 0;
+      const subtotal = base * qty;
+      const fees = Math.round(subtotal * feesRate);
+      const total = subtotal + fees;
+      ticketModal.querySelector('[data-subtotal]').textContent = formatNaira(subtotal);
+      ticketModal.querySelector('[data-fees]').textContent = formatNaira(fees);
+      ticketModal.querySelector('[data-total]').textContent = formatNaira(total);
+    }
+
+    ['change','keyup','input'].forEach(evt => {
+      ticketModal.addEventListener(evt, (e) => {
+        if (e.target.matches('select[name="tier"], input[name="qty"]')) updateTotals();
+      });
+    });
+
+    // Simple validation for quick checkout
+    (() => {
+      const form = document.getElementById('quickCheckout');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if(!form.checkValidity()){
+          e.stopPropagation();
+          form.classList.add('was-validated');
+          return;
+        }
+        // Simulate handoff to payment
+        const btn = form.querySelector('button[type="submit"]');
+        const original = btn.innerHTML;
+        btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Processing…';
+        setTimeout(()=>{
+          btn.disabled = false; btn.innerHTML = original;
+          const toast = document.createElement('div');
+          toast.className = 'toast align-items-center text-bg-success border-0 position-fixed top-0 start-50 translate-middle-x mt-4';
+          toast.setAttribute('role','status'); toast.setAttribute('aria-live','polite'); toast.setAttribute('aria-atomic','true');
+          toast.innerHTML = '<div class="d-flex"><div class="toast-body">Great! Check your email for confirmation. 🎟️</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button></div>';
+          document.body.appendChild(toast);
+          const t = new bootstrap.Toast(toast, { delay: 3000 }); t.show();
+          t._element.addEventListener('hidden.bs.toast', ()=> toast.remove());
+        }, 1200);
+      });
+    })();
+
+    // Accessibility: remove autoplay if reduced motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      try { heroGlide.update({ autoplay: false }); loveGlide.update({ autoplay: false }); } catch(e){}
+    }
+  </script>
+</body>
+</html>
