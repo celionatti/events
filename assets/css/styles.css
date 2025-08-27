@@ -201,131 +201,131 @@ section {
 }
 
 /* Ticket Cards */
-    .ticket-card {
-      background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.05),
-        rgba(255, 255, 255, 0.02)
-      );
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem;
-      box-shadow: var(--shadow-1);
-    }
-    
-    .ticket-tier {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: var(--radius-md);
-      padding: 1rem;
-      margin-bottom: 1rem;
-      transition: all 0.2s ease;
-    }
-    
-    .ticket-tier.sold-out {
-      opacity: 0.6;
-      background: rgba(255, 255, 255, 0.05);
-    }
-    
-    .tier-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 0.5rem;
-    }
-    
-    .price {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--blue-1);
-    }
-    
-    .countdown {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--blue-1);
-      padding: 0.5rem 1rem;
-      background: rgba(13, 71, 161, 0.2);
-      border-radius: var(--radius-md);
-      display: inline-block;
-    }
-    
-    .event-detail-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-    
-    .event-detail-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(30, 136, 229, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    
-    /* Quantity selector */
-    .quantity-selector {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-    
-    .quantity-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      color: var(--text-1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-    
-    .quantity-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    
-    .quantity-input {
-      width: 60px;
-      text-align: center;
-      background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: var(--radius-sm);
-      color: var(--text-1);
-      padding: 0.5rem;
-    }
-    
-    .sold-out-badge {
-      background: #dc3545;
-      color: white;
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-      font-size: 0.8rem;
-      margin-left: 0.5rem;
-    }
-    
-    /* Toast notification */
-    .toast {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 9999;
-    }
-    
-    /* Two-column layout */
-    .two-column-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-    }
+.ticket-card {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.02)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-1);
+}
+
+.ticket-tier {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+}
+
+.ticket-tier.sold-out {
+  opacity: 0.6;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tier-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--blue-1);
+}
+
+.countdown {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--blue-1);
+  padding: 0.5rem 1rem;
+  background: rgba(13, 71, 161, 0.2);
+  border-radius: var(--radius-md);
+  display: inline-block;
+}
+
+.event-detail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.event-detail-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(30, 136, 229, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Quantity selector */
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.quantity-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: var(--text-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.quantity-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quantity-input {
+  width: 60px;
+  text-align: center;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  color: var(--text-1);
+  padding: 0.5rem;
+}
+
+.sold-out-badge {
+  background: #dc3545;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+}
+
+/* Toast notification */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+/* Two-column layout */
+.two-column-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
 
 /* Footer */
 footer {
@@ -395,22 +395,95 @@ footer {
   }
 }
 
+/* Modal styles */
+.modal-content {
+  background: rgba(20, 15, 35, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+}
+
+.form-control {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.form-control:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--primary);
+  color: white;
+  box-shadow: 0 0 0 0.25rem rgba(138, 43, 226, 0.25);
+}
+
+.form-label {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Attendee form styles */
+.attendee-form {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.attendee-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+/* Custom event hero styling */
+.event-hero {
+  padding: 6rem 0 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.event-hero-img {
+  height: 400px;
+  object-fit: cover;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+}
+
+/* Additional custom styles */
+.nav-link {
+  color: rgba(255, 255, 255, 0.85) !important;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  color: white !important;
+  transform: translateY(-1px);
+}
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
 /* Responsive adjustments */
-    @media (max-width: 992px) {
-      .two-column-layout {
-        grid-template-columns: 1fr;
-      }
-      
-      .event-hero {
-        padding: 4rem 0 1rem;
-      }
-      
-      .event-detail-item {
-        flex-direction: column;
-        text-align: center;
-        gap: 0.5rem;
-      }
-    }
+@media (max-width: 992px) {
+  .two-column-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .event-hero {
+    padding: 4rem 0 1rem;
+  }
+
+  .event-detail-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+}
 
 /* Accessibility: respect reduced motion */
 @media (prefers-reduced-motion: reduce) {

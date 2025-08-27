@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Discover Events - Eventlyy</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    :root {
+      /* Three blues: light, mid, deep */
+      --blue-1: #64b5f6;
+      --blue-2: #1e88e5;
+      --blue-3: #0d47a1;
+      /* Base dark palette */
+      --bg-0: #0b1220;
+      --bg-1: #0e1526;
+      --bg-2: #101a30;
+      --text-1: #e2e8f0;
+      --text-2: #9fb3c8;
+      --glass: white;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --shadow-1: 0 10px 30px rgba(0, 0, 0, 0.35);
+      --shadow-2: 0 6px 18px rgba(0, 0, 0, 0.25);
+      --shadow-focus: 0 0 0 0.25rem rgba(30, 136, 229, 0.35);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+        "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(
+          1200px 600px at 75% -100px,
+          rgba(30, 136, 229, 0.25),
+          transparent 70%
+        ),
+        radial-gradient(
+          800px 400px at -10% 20%,
+          rgba(13, 71, 161, 0.25),
+          transparent 60%
+        ),
+        linear-gradient(180deg, var(--bg-0), var(--bg-1) 30%, var(--bg-2) 100%);
+      color: var(--text-1);
+      overflow-x: hidden;
+    }
+
+    /* Glassmorphic sticky navbar */
+    .navbar-glass {
+      position: sticky;
+      top: 0;
+      z-index: 1030;
+      background: rgba(13, 19, 35, 0.48);
+      backdrop-filter: saturate(1.2) blur(14px);
+      -webkit-backdrop-filter: saturate(1.2) blur(14px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .navbar .nav-link {
+      color: var(--text-2);
+      transition: 0.25s ease;
+    }
+    
+    .navbar .nav-link:hover,
+    .navbar .nav-link:focus {
+      color: var(--blue-1);
+    }
+
+    .brand-mark {
+      display: inline-grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--blue-2), var(--blue-3));
+      border-radius: 10px;
+      color: white;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      box-shadow: var(--shadow-2);
+    }
+
+    /* Primary button (custom) */
+    .btn-pulse {
+      --c1: var(--blue-2);
+      --c2: var(--blue-3);
+      background: linear-gradient(135deg, var(--c1), var(--c2));
+      color: white;
+      border: none;
+      border-radius: 14px;
+      padding: 0.75rem 1.1rem;
+      box-shadow: 0 8px 22px rgba(30, 136, 229, 0.35);
+      transition: transform 0.15s ease, box-shadow 0.3s ease, filter 0.3s ease;
+    }
+    
+    .btn-pulse:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+    }
+    
+    .btn-pulse:focus {
+      box-shadow: var(--shadow-focus);
+      outline: none;
+    }
+    
+    .btn-ghost {
+      color: var(--blue-1);
+      border: 1px solid rgba(100, 181, 246, 0.35);
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 14px;
+      transition: 0.25s ease;
+    }
+    
+    .btn-ghost:hover {
+      background: rgba(100, 181, 246, 0.1);
+      color: white;
+    }
+
+    /* Hero section */
+    .page-hero {
+      padding: 5rem 0 3rem;
+      text-align: center;
+    }
+    
+    .page-title {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: linear-gradient(to right, #fff, var(--blue-1));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .page-subtitle {
+      color: var(--text-2);
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+
+    /* Filters section */
+    .filters-section {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .filter-group {
+      margin-bottom: 1rem;
+    }
+    
+    .filter-label {
+      color: var(--text-2);
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    
+    .filter-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    
+    .filter-chip {
+      padding: 0.5rem 1rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 100px;
+      color: var(--text-2);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .filter-chip:hover,
+    .filter-chip.active {
+      background: rgba(30, 136, 229, 0.2);
+      color: var(--blue-1);
+      border-color: var(--blue-1);
+    }
+
+    /* Events grid */
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+    
+    .event-card {
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.05),
+        rgba(255, 255, 255, 0.02)
+      );
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease,
+        border-color 0.25s ease;
+      box-shadow: var(--shadow-1);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .event-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(100, 181, 246, 0.35);
+    }
+    
+    .event-img {
+      height: 200px;
+      object-fit: cover;
+      width: 100%;
+      filter: saturate(1.05) contrast(1.05);
+    }
+    
+    .event-content {
+      padding: 1.5rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .event-category {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.8rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(13, 71, 161, 0.18);
+      color: var(--blue-1);
+      margin-bottom: 1rem;
+      align-self: flex-start;
+    }
+    
+    .event-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      font-size: 1.25rem;
+    }
+    
+    .event-description {
+      color: var(--text-2);
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+    
+    .event-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .event-detail {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--text-2);
+      font-size: 0.9rem;
+    }
+    
+    .event-detail i {
+      color: var(--blue-1);
+      width: 20px;
+    }
+    
+    .event-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+    }
+    
+    .event-price {
+      font-weight: 700;
+      color: var(--blue-1);
+      font-size: 1.25rem;
+    }
+
+    /* Pagination */
+    .pagination {
+      justify-content: center;
+      margin-bottom: 4rem;
+    }
+    
+    .page-link {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-2);
+      margin: 0 0.25rem;
+      border-radius: var(--radius-md);
+    }
+    
+    .page-link:hover {
+      background: rgba(30, 136, 229, 0.2);
+      color: var(--blue-1);
+      border-color: var(--blue-1);
+    }
+    
+    .page-item.active .page-link {
+      background: rgba(30, 136, 229, 0.3);
+      color: var(--blue-1);
+      border-color: var(--blue-1);
+    }
+
+    /* Newsletter section */
+    .newsletter-section {
+      background: linear-gradient(
+        135deg,
+        rgba(30, 136, 229, 0.15),
+        rgba(13, 71, 161, 0.1)
+      );
+      border-radius: var(--radius-lg);
+      padding: 3rem 2rem;
+      text-align: center;
+      margin-bottom: 4rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .newsletter-title {
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text-1);
+    }
+    
+    .newsletter-text {
+      color: var(--text-2);
+      max-width: 500px;
+      margin: 0 auto 2rem;
+    }
+    
+    .newsletter-form {
+      display: flex;
+      max-width: 500px;
+      margin: 0 auto;
+      gap: 1rem;
+    }
+    
+    .newsletter-input {
+      flex-grow: 1;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem;
+      color: white;
+    }
+    
+    .newsletter-input:focus {
+      outline: none;
+      border-color: var(--blue-1);
+      box-shadow: var(--shadow-focus);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    /* Animations (on-scroll) */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px) scale(0.98);
+      transition: all 0.7s cubic-bezier(0.2, 0.65, 0.2, 1);
+    }
+    
+    .reveal.in {
+      opacity: 1;
+      transform: none;
+    }
+    
+    .delay-1 {
+      transition-delay: 0.08s;
+    }
+    
+    .delay-2 {
+      transition-delay: 0.16s;
+    }
+    
+    .delay-3 {
+      transition-delay: 0.24s;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .events-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .page-title {
+        font-size: 2.5rem;
+      }
+      
+      .newsletter-form {
+        flex-direction: column;
+      }
+      
+      .filter-options {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .filter-chip {
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    /* Accessibility: respect reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal,
+      .event-card,
+      .btn-pulse {
+        transition: none !important;
+      }
+      
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-glass">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-1" href="#">
+        <span class="brand-mark">E</span>
+        <span class="fw-bold text-white">Eventlyy.</span>
+      </a>
+      <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileNav"
+        aria-controls="mobileNav" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"><i class="bi bi-list fs-2"></i></span>
+      </button>
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+          <li class="nav-item"><a class="nav-link active" href="#">Discover Events</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
+          <li class="nav-item"><a class="btn btn-ghost ms-lg-2" href="#">Login</a></li>
+          <li class="nav-item"><a class="btn btn-pulse ms-lg-2" href="#">Sign Up</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- Offcanvas Mobile Nav -->
+  <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="mobileNav" aria-labelledby="mobileNavLabel"
+    style="background:rgba(6,10,20,.98)">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="mobileNavLabel">Eventlyy.</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <a class="nav-link py-2" href="#" data-bs-dismiss="offcanvas">Discover Events</a>
+      <a class="nav-link py-2" href="#" data-bs-dismiss="offcanvas">About Us</a>
+      <a class="btn btn-ghost w-100 mt-3" href="#" data-bs-dismiss="offcanvas">Login</a>
+      <a class="btn btn-pulse w-100 mt-3" href="#" data-bs-dismiss="offcanvas">Sign up</a>
+    </div>
+  </div>
+
+  <!-- HERO SECTION -->
+  <section class="page-hero">
+    <div class="container">
+      <h1 class="page-title reveal">Discover Amazing Events</h1>
+      <p class="page-subtitle reveal delay-1">Find and book tickets for the best concerts, conferences, and experiences in your city and beyond.</p>
+      
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="input-group mb-4 reveal delay-2">
+            <input type="text" class="form-control" placeholder="Search events, artists, or categories..." style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: var(--radius-md);">
+            <button class="btn btn-pulse" type="button">
+              <i class="bi bi-search me-2"></i> Search
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILTERS SECTION -->
+  <section class="container mb-5">
+    <div class="filters-section reveal">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="filter-group">
+            <div class="filter-label">Date</div>
+            <select class="form-select" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white;">
+              <option>Any date</option>
+              <option>Today</option>
+              <option>Tomorrow</option>
+              <option>This week</option>
+              <option>This weekend</option>
+              <option>Next week</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="filter-group">
+            <div class="filter-label">Category</div>
+            <select class="form-select" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white;">
+              <option>All categories</option>
+              <option>Music</option>
+              <option>Conference</option>
+              <option>Workshop</option>
+              <option>Sports</option>
+              <option>Comedy</option>
+              <option>Art & Culture</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="filter-group">
+            <div class="filter-label">Location</div>
+            <select class="form-select" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white;">
+              <option>Any location</option>
+              <option>Lagos</option>
+              <option>Abuja</option>
+              <option>Port Harcourt</option>
+              <option>Ibadan</option>
+              <option>Online</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="filter-group">
+            <div class="filter-label">Price</div>
+            <select class="form-select" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white;">
+              <option>Any price</option>
+              <option>Free</option>
+              <option>Under ₦5,000</option>
+              <option>₦5,000 - ₦10,000</option>
+              <option>₦10,000 - ₦20,000</option>
+              <option>Over ₦20,000</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <div class="filter-group mt-3">
+        <div class="filter-label">Tags</div>
+        <div class="filter-options">
+          <div class="filter-chip active">All events</div>
+          <div class="filter-chip">Popular</div>
+          <div class="filter-chip">Featured</div>
+          <div class="filter-chip">Early bird</div>
+          <div class="filter-chip">Sold out</div>
+          <div class="filter-chip">Discount</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTS GRID -->
+  <section class="container">
+    <h2 class="mb-4 reveal">Featured Events</h2>
+    
+    <div class="events-grid">
+      <!-- Event 1 -->
+      <div class="event-card reveal">
+        <img src="https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=500&auto=format&fit=crop" alt="Afrobeats Concert" class="event-img">
+        <div class="event-content">
+          <span class="event-category"><i class="bi bi-music-note-beamed"></i> Music</span>
+          <h3 class="event-title">Afrobeats Live: Midnight Wave</h3>
+          <p class="event-description">Experience the biggest names in African music for a 5-hour extravaganza that will keep you dancing until the early hours.</p>
+          
+          <div class="event-details">
+            <div class="event-detail">
+              <i class="bi bi-calendar-event"></i>
+              <span>Fri, Oct 10 • 8:00 PM</span>
+            </div>
+            <div class="event-detail">
+              <i class="bi bi-geo-alt"></i>
+              <span>Eko Convention Center, Lagos</span>
+            </div>
+          </div>
+          
+          <div class="event-footer">
+            <div class="event-price">From ₦15,000</div>
+            <a href="#" class="btn btn-pulse btn-sm">View Event</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Event 2 -->
+      <div class="event-card reveal delay-1">
+        <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=500&auto=format&fit=crop" alt="Tech Conference" class="event-img">
+        <div class="event-content">
+          <span class="event-category"><i class="bi bi-laptop"></i> Technology</span>
+          <h3 class="event-title">Tech Summit Africa 2025</h3>
+          <p class="event-description">Join industry leaders for a 2-day conference on the future of technology, innovation, and digital transformation in Africa.</p>
+          
+          <div class="event-details">
+            <div class="event-detail">
+              <i class="bi bi-calendar-event"></i>
+              <span>Nov 15-16 • 9:00 AM</span>
+            </div>
+            <div class="event-detail">
+              <i class="bi bi-geo-alt"></i>
+              <span>Landmark Centre, Lagos</span>
+            </div>
+          </div>
+          
+          <div class="event-footer">
+            <div class="event-price">From ₦25,000</div>
+            <a href="#" class="btn btn-pulse btn-sm">View Event</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Event 3 -->
+      <div class="event-card reveal delay-2">
+        <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?q=80&w=500&auto=format&fit=crop" alt="Art Exhibition" class="event-img">
+        <div class="event-content">
+          <span class="event-category"><i class="bi bi-palette"></i> Art</span>
+          <h3 class="event-title">Contemporary Art Exhibition</h3>
+          <p class="event-description">Discover works from emerging African artists in this month-long exhibition showcasing contemporary art forms.</p>
+          
+          <div class="event-details">
+            <div class="event-detail">
+              <i class="bi bi-calendar-event"></i>
+              <span>Sep 1-30 • 10:00 AM</span>
+            </div>
+            <div class="event-detail">
+              <i class="bi bi-geo-alt"></i>
+              <span>National Gallery, Abuja</span>
+            </div>
+          </div>
+          
+          <div class="event-footer">
+            <div class="event-price">₦5,000</div>
+            <a href="#" class="btn btn-pulse btn-sm">View Event</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Event 4 -->
+      <div class="event-card reveal">
+        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=500&auto=format&fit=crop" alt="Food Festival" class="event-img">
+        <div class="event-content">
+          <span class="event-category"><i class="bi bi-egg-fried"></i> Food & Drink</span>
+          <h3 class="event-title">Lagos Food Festival</h3>
+          <p class="event-description">Taste your way through the best of Nigerian cuisine with over 50 food vendors, live cooking demos, and competitions.</p>
+          
+          <div class="event-details">
+            <div class="event-detail">
+              <i class="bi bi-calendar-event"></i>
+              <span>Sun, Dec 8 • 12:00 PM</span>
+            </div>
+            <div class="event-detail">
+              <i class="bi bi-geo-alt"></i>
+              <span>Muritala Park, Lagos</span>
+            </div>
+          </div>
+          
+          <div class="event-footer">
+            <div class="event-price">₦3,500</div>
+            <a href="#" class="btn btn-pulse btn-sm">View Event</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Event 5 -->
+      <div class="event-card reveal delay-1">
+        <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=500&auto=format&fit=crop" alt="Comedy Show" class="event-img">
+        <div class="event-content">
+          <span class="event-category"><i class="bi bi-mic"></i> Comedy</span>
+          <h3 class="event-title">Night of Laughter</h3>
+          <p class="event-description">An evening of non-stop laughter featuring Nigeria's top comedians. Prepare for sore cheeks from laughing too much!</p>
+          
+          <div class="event-details">
+            <div class="event-detail">
+              <i class="bi bi-calendar-event"></i>
+              <span>Sat, Nov 23 • 7:00 PM</span>
+            </div>
+            <div class="event-detail">
+              <i class="bi bi-geo-alt"></i>
+              <span>Muson Centre, Lagos</span>
+            </div>
+          </div>
+          
+          <div class="event-footer">
+            <div class="event-price">From ₦7,000</div>
+            <a href="#" class="btn btn-pulse btn-sm">View Event</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Event 6 -->
+      <div class="event-card reveal delay-2">
+        <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=500&auto=format&fit=crop" alt="Marathon" class="event-img">
+        <div class="event-content">
+          <span class="event-category"><i class="bi bi-person-running"></i> Sports</span>
+          <h3 class="event-title">Lagos City Marathon</h3>
+          <p class="event-description">Join thousands of runners in this annual marathon through the heart of Lagos. Choose from 5K, 10K, or full marathon.</p>
+          
+          <div class="event-details">
+            <div class="event-detail">
+              <i class="bi bi-calendar-event"></i>
+              <span>Sun, Feb 9 • 6:00 AM</span>
+            </div>
+            <div class="event-detail">
+              <i class="bi bi-geo-alt"></i>
+              <span>National Stadium, Lagos</span>
+            </div>
+          </div>
+          
+          <div class="event-footer">
+            <div class="event-price">₦8,000</div>
+            <a href="#" class="btn btn-pulse btn-sm">View Event</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Pagination -->
+    <nav aria-label="Event pagination">
+      <ul class="pagination">
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+        </li>
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </section>
+
+  <!-- NEWSLETTER SECTION -->
+  <section class="container">
+    <div class="newsletter-section reveal">
+      <h3 class="newsletter-title">Never Miss an Event</h3>
+      <p class="newsletter-text">Subscribe to our newsletter and be the first to know about new events, exclusive deals, and special promotions.</p>
+      
+      <form class="newsletter-form">
+        <input type="email" class="newsletter-input" placeholder="Your email address">
+        <button type="submit" class="btn btn-pulse">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="py-4">
+    <div class="container">
+      <div class="row align-items-center gy-3">
+        <div class="col-md-6">
+          <div class="d-flex align-items-center gap-1">
+            <span class="brand-mark">E</span>
+            <div>
+              <div class="fw-bold">Eventlyy.</div>
+              <div class="small">© <span id="y"></span> Eventlyy. All rights reserved.</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <a href="#" class="text-decoration-none me-3">Terms</a>
+          <a href="#" class="text-decoration-none me-3">Privacy</a>
+          <a href="#top" class="text-decoration-none"><i class="bi bi-arrow-up-circle"></i> Back to top</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap + Glide JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Year in footer
+    document.getElementById("y").textContent = new Date().getFullYear();
+
+    // Filter chips functionality
+    document.querySelectorAll('.filter-chip').forEach(chip => {
+      chip.addEventListener('click', function() {
+        // Remove active class from all chips in the same group
+        this.parentElement.querySelectorAll('.filter-chip').forEach(c => {
+          c.classList.remove('active');
+        });
+        
+        // Add active class to clicked chip
+        this.classList.add('active');
+        
+        // In a real application, you would filter events here
+        console.log('Filtering by:', this.textContent);
+      });
+    });
+
+    // IntersectionObserver for reveal animations
+    const revealItems = document.querySelectorAll(".reveal");
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in");
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.14 }
+    );
+    revealItems.forEach((el) => io.observe(el));
+  </script>
+</body>
+
+</html>
